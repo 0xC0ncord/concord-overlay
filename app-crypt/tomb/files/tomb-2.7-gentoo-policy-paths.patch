@@ -1,0 +1,10 @@
+diff -urN tomb-2.7_a/Makefile tomb-2.7_b/Makefile
+--- a/Makefile	2019-10-11 16:06:55.000000000 -0400
++++ b/Makefile	2019-12-03 03:35:01.225982129 -0500
+@@ -1,5 +1,5 @@
+ PROG = tomb
+-PREFIX ?= /usr/local
++PREFIX ?= /usr
+ MANDIR ?= ${PREFIX}/share/man
+ 
+ all:

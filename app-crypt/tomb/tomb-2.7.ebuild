@@ -21,6 +21,8 @@ RDEPEND="app-shells/zsh
 
 S="${WORKDIR}/Tomb-${PV}"
 
+PATCHES="${FILESDIR}/${P}-gentoo-policy-paths.patch"
+
 src_compile(){
 	true
 }
