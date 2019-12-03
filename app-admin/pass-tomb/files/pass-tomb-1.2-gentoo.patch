@@ -1,0 +1,30 @@
+--- a/Makefile	2019-06-29 18:08:12.000000000 -0400
++++ b/Makefile	2019-12-03 03:11:48.412012520 -0500
+@@ -19,16 +19,11 @@
+ install:
+ 	@install -v -d "$(DESTDIR)$(MANDIR)/man1"
+ 	@install -v -d "$(DESTDIR)$(SYSTEM_EXTENSION_DIR)/" "$(DESTDIR)$(LIBDIR)/systemd/system/"
+-	@install -v -d "$(DESTDIR)$(BASHCOMPDIR)" "$(DESTDIR)$(ZSHCOMPDIR)"
+ 	@install -v -m 0755 $(PROG).bash "$(DESTDIR)$(SYSTEM_EXTENSION_DIR)/$(PROG).bash"
+ 	@install -v -m 0755 open.bash "$(DESTDIR)$(SYSTEM_EXTENSION_DIR)/open.bash"
+ 	@install -v -m 0755 close.bash "$(DESTDIR)$(SYSTEM_EXTENSION_DIR)/close.bash"
+ 	@install -v -m 0644 pass-$(PROG).1 "$(DESTDIR)$(MANDIR)/man1/pass-$(PROG).1"
+ 	@install -v -m 0644 timer/pass-close@.service "$(DESTDIR)$(LIBDIR)/systemd/system/pass-close@.service"
+-	@install -v -m 0644 "completion/pass-$(PROG).bash" "$(DESTDIR)$(BASHCOMPDIR)/pass-$(PROG)"
+-	@install -v -m 0644 "completion/pass-$(PROG).zsh" "$(DESTDIR)$(ZSHCOMPDIR)/_pass-$(PROG)"
+-	@install -v -m 0644 "completion/pass-open.zsh" "$(DESTDIR)$(ZSHCOMPDIR)/_pass-open"
+-	@install -v -m 0644 "completion/pass-close.zsh" "$(DESTDIR)$(ZSHCOMPDIR)/_pass-close"
+ 	@echo
+ 	@echo "pass-$(PROG) is installed succesfully"
+ 	@echo
+@@ -40,10 +35,6 @@
+ 		"$(DESTDIR)$(SYSTEM_EXTENSION_DIR)/close.bash" \
+ 		"$(DESTDIR)$(MANDIR)/man1/pass-$(PROG).1" \
+ 		"$(DESTDIR)$(LIBDIR)/systemd/system/pass-close@.service" \
+-		"$(DESTDIR)$(BASHCOMPDIR)/pass-$(PROG)" \
+-		"$(DESTDIR)$(ZSHCOMPDIR)/_pass-$(PROG)" \
+-		"$(DESTDIR)$(ZSHCOMPDIR)/_pass-open" \
+-		"$(DESTDIR)$(ZSHCOMPDIR)/_pass-close"
+ 
+ 
+ COVERAGE ?= true
