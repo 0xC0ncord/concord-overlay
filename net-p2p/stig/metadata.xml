@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<name>0xC0ncord</name>
+		<email>me@concord.sh</email>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">https://github.com/rndusr/stig</remote-id>
+		<bugs-to>https://github.com/rndusr/stig/issues</bugs-to>
+	</upstream>
+	<use>
+		<flag name="setproctitle">Pull in setproctitle which will prettify process names in stig</flag>
+	</use>
+</pkgmetadata>
