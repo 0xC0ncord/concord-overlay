@@ -4,7 +4,13 @@ This Gentoo overlay contains experimental and potentially unstable packages that
 
 ## Installation
 
-This repository can be added manually or by using Layman.
+This repository can be added manually or by using eselect-repository or layman.
+
+### eselect-repository
+
+```
+# eselect repository add concord git https://github.com/0xC0ncord/concord-overlay.git
+```
 
 ### Layman
 
