@@ -1,0 +1,12 @@
+diff -urN a/Makefile b/Makefile
+--- a/Makefile	2020-08-05 18:11:08.000000000 -0400
++++ b/Makefile	2020-08-31 20:06:39.407953383 -0400
+@@ -52,7 +52,7 @@
+ ifeq ($(CONFIG_CXX_ALLOCATOR),true)
+     # make sure LTO is compatible in case CC and CXX don't match (such as clang and g++)
+     CXX := $(CC)
+-    LDLIBS += -lstdc++ -lgcc_s
++    LDLIBS += -lc++ -lc++abi -lgcc_s
+ 
+     SOURCES += new.cc
+     OBJECTS += new.o
