@@ -1,0 +1,23 @@
+From 73e923b5b01cb931f4ae1ecc3b87a76c9d230548 Mon Sep 17 00:00:00 2001
+From: Adam_pi3 <pi3@pi3.com.pl>
+Date: Thu, 27 Aug 2020 21:15:29 -0400
+Subject: [PATCH] Fix failure path
+
+If error appears during database creation, we might deadlock system since we do not unlock text section
+---
+ src/modules/database/p_database.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/modules/database/p_database.c b/src/modules/database/p_database.c
+index 962e279..c9ffe14 100644
+--- a/src/modules/database/p_database.c
++++ b/src/modules/database/p_database.c
+@@ -414,6 +414,8 @@ int p_create_database(void) {
+       p_print_log(P_LKRG_CRIT,
+          "CREATING DATABASE ERROR: HASH FROM _STEXT!\n");
+       p_ret = P_LKRG_GENERAL_ERROR;
++      p_text_section_unlock();
++      goto p_create_database_out;
+    } else {
+       p_ret = P_LKRG_SUCCESS;
+    }

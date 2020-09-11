@@ -1,0 +1,53 @@
+From b459b334e6a1020732541840957ffefb2d1873df Mon Sep 17 00:00:00 2001
+From: Solar Designer <solar@openwall.com>
+Date: Tue, 4 Aug 2020 21:48:36 +0200
+Subject: [PATCH] Don't include linux/cryptohash.h on recent kernels
+
+This fixes LKRG build on Linux 5.8+, which renamed that header file.  Thanks to
+Andy Lavr for reporting this problem and suggesting a (different) fix, which
+made us revisit our use of that header file.
+
+We only need that header file on older kernels (< 4.4.72 or < RHEL 7.4) for the
+one use of md5_transform() in get_random_long().  On newer kernels, we simply
+use the kernel-provided get_random_long().  Further, 5.8's crypto/sha.h doesn't
+declare md5_transform() anyway (linux/cryptohash.h on much older kernels did).
+---
+ src/modules/exploit_detection/p_exploit_detection.h | 5 +----
+ src/p_lkrg_main.h                                   | 7 +++++++
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/src/modules/exploit_detection/p_exploit_detection.h b/src/modules/exploit_detection/p_exploit_detection.h
+index 1ef58f5..1018a18 100644
+--- a/src/modules/exploit_detection/p_exploit_detection.h
++++ b/src/modules/exploit_detection/p_exploit_detection.h
+@@ -333,10 +333,7 @@ int p_ed_pcfi_validate_sp(struct task_struct *p_task, struct p_ed_process *p_ori
+ int p_exploit_detection_init(void);
+ void p_exploit_detection_exit(void);
+ 
+-#if ( (LINUX_VERSION_CODE < KERNEL_VERSION(4,4,72)) && \
+-      (!(defined(RHEL_RELEASE_CODE)) || \
+-         RHEL_RELEASE_CODE < RHEL_RELEASE_VERSION(7, 4)))
+-
++#ifdef P_LKRG_CUSTOM_GET_RANDOM_LONG
+ static DEFINE_PER_CPU(__u32 [MD5_DIGEST_WORDS], p_get_random_int_hash);
+ 
+ static inline unsigned long get_random_long(void) {
+diff --git a/src/p_lkrg_main.h b/src/p_lkrg_main.h
+index 7424624..fb214d3 100644
+--- a/src/p_lkrg_main.h
++++ b/src/p_lkrg_main.h
+@@ -60,7 +60,14 @@
+ 
+ #include <linux/signal.h>
+ #include <linux/timex.h>
++
++#if ( (LINUX_VERSION_CODE < KERNEL_VERSION(4,4,72)) && \
++      (!(defined(RHEL_RELEASE_CODE)) || \
++         RHEL_RELEASE_CODE < RHEL_RELEASE_VERSION(7, 4)))
++#define P_LKRG_CUSTOM_GET_RANDOM_LONG
++/* We use md5_transform() in our custom get_random_long() */
+ #include <linux/cryptohash.h>
++#endif
+ 
+ #include <linux/stacktrace.h>
+ #include <asm/stacktrace.h>

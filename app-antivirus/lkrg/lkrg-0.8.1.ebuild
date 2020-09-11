@@ -24,6 +24,17 @@ CONFIG_CHECK="
 	KALLSYMS_ALL
 "
 
+PATCHES="${FILESDIR}/lkrg-0.8.1-fix-failure-path.patch"
+
+src_prepare() {
+	if kernel_is -ge 5 8; then
+		eapply "${FILESDIR}/lkrg-0.8.1_linux-5.8.patch"
+		eapply "${FILESDIR}/lkrg-0.8.1_linux-5.8-no-rhel-fix.patch"
+		eapply "${FILESDIR}/lkrg-0.8.1_linux-5.8-native_write_cr4-export.patch"
+	fi
+	default
+}
+
 pkg_setup() {
 	linux-mod_pkg_setup
 	#compile against selected (not running) target
