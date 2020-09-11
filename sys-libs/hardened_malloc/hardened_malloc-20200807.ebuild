@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
+inherit flag-o-matic
 
 MY_PN="QQ3A.200805.001.2020.08.07.01"
 
@@ -32,6 +33,7 @@ src_prepare() {
 }
 
 src_compile() {
+	append-ldflags "-Wl,--exclude-libs,libhardened_malloc.so"
 	emake \
 		CONFIG_WERROR=$(usex werror true false) \
 		CONFIG_NATIVE=false \
@@ -51,6 +53,10 @@ pkg_postinst() {
 	einfo "To use hardened_malloc, either add it as a preloaded library to /etc/ld.so.preload,"
 	einfo "use the LD_PRELOAD environment variable, or include it manually in your LDFLAGS,"
 	einfo "keeping in mind link order."
+	einfo
+	einfo "Note that hardened_malloc is known to break packages built using newer memory safe"
+	einfo "languages such as Rust or Go. Such packages can be excluded from linking with"
+	einfo "hardened_malloc with '-Wl,--exclude-libs,libhardened_malloc.so' in LDFLAGS."
 	einfo
 	einfo "Make sure to raise vm.max_map_count substantially to accomodate the very large"
 	einfo "number of guard pages created by hardened_malloc."
