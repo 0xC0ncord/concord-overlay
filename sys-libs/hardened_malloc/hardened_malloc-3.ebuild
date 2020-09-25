@@ -4,11 +4,9 @@
 EAPI=7
 inherit flag-o-matic
 
-MY_PN="QQ3A.200805.001.2020.08.07.01"
-
 DESCRIPTION="Hardened allocator designed for modern systems"
 HOMEPAGE="https://github.com/GrapheneOS/hardened_malloc"
-SRC_URI="https://github.com/GrapheneOS/${PN}/archive/${MY_PN}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/GrapheneOS/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -22,8 +20,6 @@ RDEPEND="${DEPEND}"
 BDEPEND="
 	|| ( >=sys-devel/clang-7.0 >=sys-devel/gcc-8.3.0 )
 "
-
-S="${WORKDIR}/${PN}-${MY_PN}"
 
 src_prepare() {
 	if use libcxx; then
