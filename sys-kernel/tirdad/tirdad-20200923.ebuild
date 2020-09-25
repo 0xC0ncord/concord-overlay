@@ -25,7 +25,7 @@ pkg_setup() {
 }
 
 pkg_postinst() {
-	default
+	linux-mod_pkg_postinst
 	einfo "\nUsage:"
 	einfo "\n    ~$ modprobe tirdad\n"
 }
