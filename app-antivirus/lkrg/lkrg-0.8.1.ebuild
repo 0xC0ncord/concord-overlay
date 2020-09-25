@@ -42,7 +42,7 @@ pkg_setup() {
 }
 
 pkg_postinst() {
-	default
+	linux-mod_pkg_postinst
 	einfo "\nUsage:"
 	einfo "\n    ~$ modprobe p_lkrg p_init_log_level=3\n"
 }
