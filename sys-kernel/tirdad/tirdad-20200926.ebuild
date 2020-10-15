@@ -8,7 +8,7 @@ inherit git-r3 linux-mod linux-info
 DESCRIPTION="Kernel module for hot-patching randomized generation of TCP ISNs for IPv4"
 HOMEPAGE="https://github.com/0xsirus/tirdad"
 EGIT_REPO_URI="https://github.com/0xsirus/tirdad.git"
-EGIT_COMMIT="8ee74f1a5345fba667175520ca06239c8e196c21"
+EGIT_COMMIT="9a0e137ae05dd1aa05c20750975598e4dac77dbf"
 LICENSE="GPL-3"
 SLOT="0"
 
