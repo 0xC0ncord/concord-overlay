@@ -27,6 +27,8 @@ RDEPEND="
 	dev-python/blinker[${PYTHON_USEDEP}]
 	setproctitle? ( dev-python/setproctitle[${PYTHON_USEDEP}] )
 	dev-python/mock[${PYTHON_USEDEP}]
+	>=dev-python/multidict-4.5[${PYTHON_USEDEP}]
+	<dev-python/multidict-5.0[${PYTHON_USEDEP}]
 "
 
 S="${WORKDIR}/${PN}-${PV}a0"
