@@ -506,11 +506,11 @@ FILECAPS=(
 S="${WORKDIR}/v2-${PV}"
 
 src_compile() {
-	LDFLAGS="-extldflags \"${LDFLAGS}\""
-	emake generate miniflux || die
+	go build || die
 }
 
 src_install() {
+	mv miniflux.app miniflux
 	dobin miniflux
 
 	einstalldocs
@@ -529,12 +529,6 @@ src_install() {
 	if use acct; then
 		fowners root:miniflux /etc/miniflux.conf
 		fperms o-rwx /etc/miniflux.conf
-
-		diropts -m0750 -o root -g miniflux
-		keepdir /var/log/miniflux
-
-		diropts -m0775 -o root -g miniflux
-		keepdir /var/run/miniflux
 	fi
 }
 
