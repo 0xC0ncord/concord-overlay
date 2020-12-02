@@ -506,11 +506,10 @@ FILECAPS=(
 S="${WORKDIR}/v2-${PV}"
 
 src_compile() {
-	go build || die
+	go build -ldflags="-s -w -X 'miniflux.app/version.Version=${PV}' " -o miniflux main.go || die
 }
 
 src_install() {
-	mv miniflux.app miniflux
 	dobin miniflux
 
 	einstalldocs
