@@ -1,6 +1,6 @@
 # 0xC0ncord's Gentoo Overlay
 
-This is the personal overlay of 0xC0ncord that contains experimental and potentially unstable packages.
+This is my personal Gentoo overlay. Some of these packages are experimental and/or potentially unstable, however I do try to keep them relatively useable for public consumption.
 
 ## Installation
 
