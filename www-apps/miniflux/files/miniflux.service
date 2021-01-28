@@ -1,0 +1,12 @@
+[Unit]
+Description=Miniflux Web Server
+After=network.target
+
+[Service]
+ExecStart=miniflux -c /etc/miniflux.conf
+PrivateTmp=true
+User=miniflux
+Group=miniflux
+
+[Install]
+WantedBy=multi-user.target
