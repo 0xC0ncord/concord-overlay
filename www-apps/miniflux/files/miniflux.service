@@ -3,7 +3,8 @@ Description=Miniflux Web Server
 After=network.target
 
 [Service]
-ExecStart=miniflux -c /etc/miniflux.conf
+ExecStart=/usr/bin/miniflux -c /etc/miniflux.conf
+ExecStartPre=/bin/bash -c "[ -d /var/run/miniflux ] || mkdir /var/run/miniflux && chown miniflux:miniflux /var/run/miniflux && chmod 770 /var/run/miniflux"
 PrivateTmp=true
 User=miniflux
 Group=miniflux
