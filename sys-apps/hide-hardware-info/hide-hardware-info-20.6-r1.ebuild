@@ -3,12 +3,10 @@
 
 EAPI=7
 
-inherit git-r3
-
+MY_PV="20.6-1"
 DESCRIPTION="Hide hardware information to unprivileged users"
 HOMEPAGE="https://github.com/Whonix/security-misc"
-EGIT_REPO_URI="https://github.com/Whonix/security-misc.git"
-EGIT_COMMIT="2ceea8d1fe9f2425488c6696f75f2ecfd9ff2235"
+SRC_URI="https://github.com/Whonix/security-misc/archive/${MY_PV}.tar.gz"
 
 LICENSE="GPL-3+"
 SLOT="0"
@@ -19,6 +17,8 @@ DEPEND=""
 RDEPEND="${DEPEND}"
 
 PATCHES="${FILESDIR}/hide-hardware-info-unit-exec-location.patch"
+
+S="${WORKDIR}/security-misc-${MY_PV}"
 
 src_compile(){
 	true
