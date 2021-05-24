@@ -36,8 +36,7 @@ BDEPEND=""
 
 CONFIG_CHECK="~FANOTIFY_ACCESS_PERMISSIONS"
 
-PATCHES="${FILESDIR}/fapolicyd-librpm-optional.patch
-		${FILESDIR}/fapolicyd-systemd-runtime-directory.patch"
+PATCHES="${FILESDIR}/fapolicyd-systemd-runtime-directory.patch"
 
 src_configure() {
 	eautoreconf
