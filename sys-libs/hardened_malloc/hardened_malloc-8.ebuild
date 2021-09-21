@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-inherit flag-o-matic
+inherit flag-o-matic savedconfig
 
 DESCRIPTION="Hardened allocator designed for modern systems"
 HOMEPAGE="https://github.com/GrapheneOS/hardened_malloc"
@@ -11,7 +11,7 @@ SRC_URI="https://github.com/GrapheneOS/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="libcxx +werror +cxx +zero-on-free +write-after-free-check +slot-randomize +slab-canary seal-metadata"
+IUSE="libcxx"
 
 DEPEND="
 	>=sys-libs/glibc-2.28
@@ -22,27 +22,55 @@ BDEPEND="
 "
 
 src_prepare() {
-	if use libcxx; then
-		eapply ${FILESDIR}/${PN}-libcxx.patch || die
-	fi
 	default
+
+	if use savedconfig; then
+		restore_config config || cp "${FILESDIR}"/config "${S}"/config || die
+	else
+		cp "${FILESDIR}"/config "${S}"/config || die
+	fi
+
+	if use libcxx; then
+		eapply "${FILESDIR}/${PN}-libcxx.patch" || die
+	fi
 }
 
 src_compile() {
 	append-ldflags "-Wl,--exclude-libs,libhardened_malloc.so"
-	emake \
-		CONFIG_WERROR=$(usex werror true false) \
-		CONFIG_NATIVE=false \
-		CONFIG_CXX_ALLOCATOR=$(usex cxx true false) \
-		CONFIG_ZERO_ON_FREE=$(usex zero-on-free true false) \
-		CONFIG_WRITE_AFTER_FREE_CHECK=$(usex write-after-free-check true false) \
-		CONFIG_SLOT_RANDOMIZE=$(usex slot-randomize true false) \
-		CONFIG_SLAB_CANARY=$(usex slab-canary true false) \
-		CONFIG_SEAL_METADATA=$(usex seal-metadata true false) || die
+	# wrap source so as to not contaminate environment
+	(
+		source "${S}"/config
+		emake \
+			CONFIG_WERROR="${CONFIG_WERROR}" \
+			CONFIG_NATIVE="${CONFIG_NATIVE}" \
+			CONFIG_CXX_ALLOCATOR="${CONFIG_CXX_ALLOCATOR}" \
+			CONFIG_ZERO_ON_FREE="${CONFIG_ZERO_ON_FREE}" \
+			CONFIG_WRITE_AFTER_FREE_CHECK="${CONFIG_WRITE_AFTER_FREE_CHECK}" \
+			CONFIG_SLOT_RANDOMIZE="${CONFIG_SLOT_RANDOMIZE}" \
+			CONFIG_SLAB_CANARY="${CONFIG_SLAB_CANARY}" \
+			CONFIG_SEAL_METADATA="${CONFIG_SEAL_METADATA}" \
+			CONFIG_SLAB_QUARANTINE_RANDOM_LENGTH="${CONFIG_SLAB_QUARANTINE_RANDOM_LENGTH}" \
+			CONFIG_SLAB_QUARANTINE_QUEUE_LENGTH="${CONFIG_SLAB_QUARANTINE_QUEUE_LENGTH}" \
+			CONFIG_GUARD_SLABS_INTERVAL="${CONFIG_GUARD_SLABS_INTERVAL}" \
+			CONFIG_GUARD_SIZE_DIVISOR="${CONFIG_GUARD_SIZE_DIVISOR}" \
+			CONFIG_REGION_QUARANTINE_RANDOM_LENGTH="${CONFIG_REGION_QUARANTINE_RANDOM_LENGTH}" \
+			CONFIG_REGION_QUARANTINE_QUEUE_LENGTH="${CONFIG_REGION_QUARANTINE_QUEUE_LENGTH}" \
+			CONFIG_REGION_QUARANTINE_SKIP_THRESHOLD="${CONFIG_REGION_QUARANTINE_SKIP_THRESHOLD}" \
+			CONFIG_FREE_SLABS_QUARANTINE_RANDOM_LENGTH="${CONFIG_FREE_SLABS_QUARANTINE_RANDOM_LENGTH}" \
+			CONFIG_CLASS_REGION_SIZE="${CONFIG_CLASS_REGION_SIZE}" \
+			CONFIG_N_ARENA="${CONFIG_N_ARENA}" \
+			CONFIG_STATS="${CONFIG_STATS}" \
+			CONFIG_EXTENDED_SIZE_CLASSES="${CONFIG_EXTENDED_SIZE_CLASSES}" \
+			CONFIG_LARGE_SIZE_CLASSES="${CONFIG_LARGE_SIZE_CLASSES}" || die
+	)
 }
 
 src_install() {
 	dolib.so libhardened_malloc.so || die
+
+	if use savedconfig; then
+		save_config config
+	fi
 }
 
 pkg_postinst() {

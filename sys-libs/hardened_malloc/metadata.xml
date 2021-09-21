@@ -21,13 +21,6 @@
 		arenas further divided up per size class.
 	</longdescription>
 	<use>
-		<flag name="werror">Build with -Werror</flag>
 		<flag name="libcxx">Link against libc++ instead of libstdc++</flag>
-		<flag name="cxx">Build the hardened C++ allocator</flag>
-		<flag name="zero-on-free">Ensure small allocations are zeroed on free</flag>
-		<flag name="write-after-free-check">Ensure new small allocations contain zeroed memory</flag>
-		<flag name="slot-randomize">Randomize selection of free slots within slabs</flag>
-		<flag name="slab-canary">Enable memory allocation canaries</flag>
-		<flag name="seal-metadata">Use Memory Protection Keys to disable access to all writable allocator state outside memory allocator code</flag>
 	</use>
 </pkgmetadata>
