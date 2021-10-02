@@ -1,4 +1,4 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -26,6 +26,14 @@ S="${WORKDIR}"
 
 src_install() {
 	webapp_src_preinst
+
+	insinto "${MY_HTDOCSDIR}"
+	doins -r .
+
+	webapp_serverowned -R "${MY_HTDOCSDIR}"/data
+	webapp_serverowned -R "${MY_HTDOCSDIR}"/rainloop
+	webapp_serverowned "${MY_HTDOCSDIR}"/index.php
+
 	webapp_src_install
 }
 
