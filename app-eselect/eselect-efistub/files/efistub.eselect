@@ -155,7 +155,8 @@ describe_list() {
 }
 
 do_list() {
-	local i targets=( $(find_targets) ) built=( $(find_built) ) orphans=()
+	local i targets=( $(find_targets) ) built=( $(find_built) )
+	local orphans=() new_built=()
 
 	write_list_start "Available kernel targets:"
 	write_numbered_list -m "(none found)" "${targets[@]}"
@@ -169,14 +170,14 @@ do_list() {
 			else
 				orphans+=( "${built[i]}" )
 			fi
-			built=( "${built[@]/${built[i]}}" )
 		elif is_signed "${built[i]}"; then
-			built[${i}]="${built[i]} $(highlight "(signed)")"
+			new_built+=( "${built[i]} $(highlight "(signed)")" )
+		else
+			new_built+=( "${built[i]}" )
 		fi
 	done
 	# compress spaces in built list
-	built=( "$(echo "${built[@]}" | sed 's/[[:space:]]\+/ /g' | xargs)" )
-	write_numbered_list -m "(none found)" "${built[@]}"
+	write_numbered_list -m "(none found)" "${new_built[@]}"
 
 	echo
 	write_list_start "Orphaned unified kernel images:"
