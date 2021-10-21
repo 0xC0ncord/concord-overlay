@@ -12,7 +12,8 @@ KEYWORDS="amd64"
 
 RDEPEND="app-admin/eselect
 		app-crypt/efitools
-		app-crypt/sbsigntools"
+		app-crypt/sbsigntools
+		sys-apps/systemd[gnuefi]"
 
 src_unpack() {
 	mkdir "${S}"
