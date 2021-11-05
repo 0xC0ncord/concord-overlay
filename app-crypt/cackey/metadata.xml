@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<use>
+		<flag name="dod-certs">Enable including DoD certificates</flag>
+		<flag name="dod-certs-on-hw-slots">Ensure that DoD certificates should be made available on hardware token slots</flag>
+	</use>
+</pkgmetadata>

@@ -1,8 +1,7 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
-EAPI=6
+EAPI=7
 
 inherit eutils
 
@@ -10,11 +9,11 @@ DESCRIPTION="PKCS#11 middleware for CAC/PIV smartcards"
 HOMEPAGE="http://cackey.rkeene.org/"
 SRC_URI="http://cackey.rkeene.org/download/${PV}/${P}.tar.gz"
 
-LICENSE="GPL"
+LICENSE="LGPL-2.1 MIT MPL-2.0"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="dod-certs-on-hw-slots
-	+dod-certs"
+IUSE="+dod-certs
+	dod-certs-on-hw-slots"
 
 RDEPEND=">=sys-apps/pcsc-lite-1.6.4
 	dev-libs/nss[utils]
