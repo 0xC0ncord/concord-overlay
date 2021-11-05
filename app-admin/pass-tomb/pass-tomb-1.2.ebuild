@@ -1,9 +1,9 @@
-# Copyright 2019 Gentoo Authors
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-DESCRIPTION="A pass extension that helps you to keep the whole tree of password encrypted inside a tomb"
+DESCRIPTION="A pass extension to help keep the tree of passwords encrypted inside a tomb"
 HOMEPAGE="https://github.com/roddhjav/pass-tomb"
 SRC_URI="https://github.com/roddhjav/pass-tomb/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
