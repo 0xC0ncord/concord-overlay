@@ -8,8 +8,8 @@ inherit autotools linux-info systemd
 DESCRIPTION="File Access Policy Daemon"
 HOMEPAGE="https://github.com/linux-application-whitelisting/fapolicyd"
 if [[ ${PV} == 9999 ]]; then
-        EGIT_REPO_URI="https://github.com/linux-application-whitelisting/fapolicyd.git"
-        inherit git-r3
+		EGIT_REPO_URI="https://github.com/linux-application-whitelisting/fapolicyd.git"
+		inherit git-r3
 else
 		SRC_URI="https://github.com/linux-application-whitelisting/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
 fi
@@ -20,19 +20,18 @@ KEYWORDS="~amd64 ~x86"
 
 IUSE="+audit debug rpm"
 
-DEPEND="acct-user/fapolicyd
-		dev-db/lmdb
+DEPEND="dev-db/lmdb
 		dev-libs/libgcrypt
 		sys-libs/libseccomp
 		dev-libs/uthash
-		dev-lang/python
 		sys-apps/file
-		sys-apps/systemd
 		sys-libs/libcap-ng
 		sys-kernel/linux-headers
 		virtual/libudev"
-RDEPEND="${DEPEND}"
-BDEPEND=""
+RDEPEND="${DEPEND}
+		acct-user/fapolicyd
+		dev-lang/python:*
+		>=sys-apps/systemd-217"
 
 CONFIG_CHECK="~FANOTIFY_ACCESS_PERMISSIONS"
 
