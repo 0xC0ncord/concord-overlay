@@ -86,9 +86,7 @@ pkg_postinst() {
 	einfo "use the LD_PRELOAD environment variable, or include it manually in your LDFLAGS,"
 	einfo "keeping in mind link order."
 	einfo
-	einfo "Note that hardened_malloc is known to break packages built using newer memory safe"
-	einfo "languages such as Rust or Go. Such packages can be excluded from linking with"
-	einfo "hardened_malloc with '-Wl,--exclude-libs,libhardened_malloc.so' in LDFLAGS."
+	einfo "Please note that some programs may break when linked against hardened_malloc."
 	einfo
 	einfo "Make sure to raise vm.max_map_count substantially to accomodate the very large"
 	einfo "number of guard pages created by hardened_malloc."
