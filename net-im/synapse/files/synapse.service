@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=notify
-NotifyAccess=main
+NotifyAccess=all
 ExecStart=/usr/bin/synctl --no-daemonize start /etc/synapse/homeserver.yaml
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
