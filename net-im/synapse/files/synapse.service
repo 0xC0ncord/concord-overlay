@@ -1,14 +1,13 @@
 [Unit]
-Description=Synapse Matrix Homeserver
+Description=Synapse Matrix homeserver
 After=network.target
-StartLimitIntervalSec=500
-StartLimitBurst=5
 
 [Service]
+Type=notify
+NotifyAccess=main
 ExecStart=/usr/bin/synctl --no-daemonize start /etc/synapse/homeserver.yaml
-ExecStop=/usr/bin/synctl stop /etc/synapse/homeserver.yaml
+ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
-RestartSec=5s
 PrivateTmp=true
 User=synapse
 Group=synapse
