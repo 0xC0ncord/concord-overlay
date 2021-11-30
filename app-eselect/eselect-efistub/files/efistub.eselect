@@ -119,10 +119,18 @@ sign_image() {
 	local d="${EROOT}/boot/EFI/Linux"
 
 	if is_number "${target}"; then
-		local targets=( $(find_built) )
-		[[ ${target} -ge 1 && ${target} -le ${#targets[@]} ]] \
+		local targets=( $(find_targets) ) built=( $(find_built) )
+		local orphans=() new_built=()
+		for (( i = 0; i < ${#built[@]}; i++ )); do
+			if [[ ! " ${targets[*]} " =~ " ${built[i]} " ]]; then
+				orphans+=( "${built[i]}" )
+			else
+				new_built+=( "${built[i]}" )
+			fi
+		done
+		[[ ${target} -ge 1 && ${target} -le ${#new_built[@]} ]] \
 			|| die -q "Number out of range: $1"
-		target=${targets[target-1]}
+		target=${new_built[target-1]}
 	fi
 
 	if [[ -n ${target} ]]; then
