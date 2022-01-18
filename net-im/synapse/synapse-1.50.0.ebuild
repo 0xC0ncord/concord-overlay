@@ -28,6 +28,7 @@ REQUIRED_USE="hiredis? ( redis )"
 RDEPEND="
 	>=dev-python/jsonschema-3.0.0[${PYTHON_USEDEP}]
 	>=dev-python/frozendict-1[${PYTHON_USEDEP}]
+	<dev-python/frozendict-2.1.2[${PYTHON_USEDEP}]
 	>=dev-python/unpaddedbase64-1.1.0[${PYTHON_USEDEP}]
 	>=dev-python/canonicaljson-1.4.0[${PYTHON_USEDEP}]
 	>=dev-python/signedjson-1.1.0[${PYTHON_USEDEP}]
@@ -55,7 +56,8 @@ RDEPEND="
 	>=dev-python/bleach-1.4.3[${PYTHON_USEDEP}]
 	>=dev-python/typing-extensions-3.7.4[${PYTHON_USEDEP}]
 	>=dev-python/cryptography-3.4.7[${PYTHON_USEDEP}]
-	>=dev-python/ijson-3.0.0[${PYTHON_USEDEP}]
+	>=dev-python/ijson-3.1.0[${PYTHON_USEDEP}]
+	=dev-python/matrix-python-common-1.0.0[${PYTHON_USEDEP}]
 
 	>=dev-python/daemonize-2.3.1[${PYTHON_USEDEP}]
 	>=dev-python/psutil-2.0.0[${PYTHON_USEDEP}]
