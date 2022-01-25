@@ -1,4 +1,4 @@
-# Copyright 2021 Gentoo Authors
+# Copyright 2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -35,8 +35,6 @@ RDEPEND="${DEPEND}
 
 CONFIG_CHECK="~FANOTIFY_ACCESS_PERMISSIONS"
 
-PATCHES="${FILESDIR}/fapolicyd-systemd-runtime-directory.patch"
-
 src_configure() {
 	eautoreconf
 	econf \
@@ -48,13 +46,12 @@ src_configure() {
 src_install() {
 	dosbin src/fapolicyd
 	dosbin src/fapolicyd-cli
+	dosbin init/fagenrules
 
 	systemd_newunit init/fapolicyd.service fapolicyd.service
 
 	insinto /usr/share/fapolicyd
 	doins init/fapolicyd-magic.mgc
-	doins init/fapolicyd.rules.known-libs
-	doins init/fapolicyd.rules.restrictive
 
 	insinto /etc/fapolicyd
 	doins init/fapolicyd.conf
