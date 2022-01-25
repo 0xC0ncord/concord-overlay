@@ -53,10 +53,18 @@ src_install() {
 	insinto /usr/share/fapolicyd
 	doins init/fapolicyd-magic.mgc
 
+	if ! use rpm; then
+		sed -i init/fapolicyd.conf -e '/^rpm_sha256_only/d'
+		sed -i init/fapolicyd.conf -e '/^trust/s/.*/trust = file/'
+	fi
+
 	insinto /etc/fapolicyd
 	doins init/fapolicyd.conf
 	doins init/fapolicyd.trust
 	fperms 0700 /etc/fapolicyd
+
+	insinto /etc/fapolicyd/rules.d
+	doins rules.d/*.rules
 
 	keepdir /var/lib/fapolicyd
 	fowners -R fapolicyd:fapolicyd /var/lib/fapolicyd
