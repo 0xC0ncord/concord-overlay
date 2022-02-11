@@ -50,6 +50,7 @@ RDEPEND="
 	>=dev-python/msgpack-0.5.2[${PYTHON_USEDEP}]
 	>=dev-python/phonenumbers-8.2.0[${PYTHON_USEDEP}]
 	>=dev-python/prometheus_client-0.4.0[${PYTHON_USEDEP}]
+	<dev-python/prometheus_client-0.13.0[${PYTHON_USEDEP}]
 	>=dev-python/attrs-17.4.0[${PYTHON_USEDEP}]
 	>=dev-python/netaddr-0.7.18[${PYTHON_USEDEP}]
 	>=dev-python/jinja-2.9[${PYTHON_USEDEP}]
