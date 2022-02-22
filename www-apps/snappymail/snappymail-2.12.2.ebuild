@@ -28,8 +28,6 @@ src_install() {
 
 	rm README.md
 
-	sed -i 's/\/var\/lib\/snappymail//' include.php || die
-
 	insinto "${MY_HTDOCSDIR}"
 	doins -r .
 
