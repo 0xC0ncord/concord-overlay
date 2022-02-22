@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<name>0xC0ncord</name>
+		<email>me@concord.sh</email>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">https://github.com/the-djmaze/snappymail</remote-id>
+		<bugs-to>https://github.com/the-djmaze/snappymail/issues</bugs-to>
+	</upstream>
+</pkgmetadata>
