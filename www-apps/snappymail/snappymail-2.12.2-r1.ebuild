@@ -37,6 +37,7 @@ src_install() {
 	webapp_serverowned -R "${MY_HTDOCSDIR}"/snappymail
 	webapp_serverowned "${MY_HTDOCSDIR}"/include.php
 	webapp_serverowned "${MY_HTDOCSDIR}"/index.php
+	webapp_serverowned "${MY_HTDOCSDIR}"/serviceworker.js
 	webapp_serverowned "${MY_HTDOCSDIR}"/.htaccess
 
 	webapp_src_install
