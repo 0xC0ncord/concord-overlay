@@ -25,12 +25,12 @@ src_prepare() {
 	default
 
 	if use savedconfig; then
-		restore_config config || cp "${FILESDIR}"/config "${S}"/config || die
+		restore_config gentoo.mk || cp "${FILESDIR}"/gentoo.mk config/gentoo.mk || die
 	else
-		cp "${FILESDIR}"/config "${S}"/config || die
+		cp "${FILESDIR}"/gentoo.mk config/gentoo.mk || die
 	fi
 
-	use savedconfig && save_config config
+	use savedconfig && save_config config/gentoo.mk
 
 	if use libcxx; then
 		eapply "${FILESDIR}/${PN}-libcxx.patch" || die
@@ -42,38 +42,12 @@ multilib_src_compile() {
 		# Create a dummy library for 32-bit builds
 		# This allows linking against hardened_malloc in
 		# LDFLAGS without erroring on multilib packages
-		printf 'ASSERT((1), "");' >libhardened_malloc.so
+		printf 'ASSERT((1), "");' > libhardened_malloc.so
 	else
 		append-ldflags "-Wl,--exclude-libs,libhardened_malloc.so"
-		# wrap source so as to not contaminate environment
-		(
-			pushd "${S}"
-			source config
-			emake \
-				CONFIG_WERROR="${CONFIG_WERROR}" \
-				CONFIG_NATIVE="${CONFIG_NATIVE}" \
-				CONFIG_CXX_ALLOCATOR="${CONFIG_CXX_ALLOCATOR}" \
-				CONFIG_ZERO_ON_FREE="${CONFIG_ZERO_ON_FREE}" \
-				CONFIG_WRITE_AFTER_FREE_CHECK="${CONFIG_WRITE_AFTER_FREE_CHECK}" \
-				CONFIG_SLOT_RANDOMIZE="${CONFIG_SLOT_RANDOMIZE}" \
-				CONFIG_SLAB_CANARY="${CONFIG_SLAB_CANARY}" \
-				CONFIG_SEAL_METADATA="${CONFIG_SEAL_METADATA}" \
-				CONFIG_SLAB_QUARANTINE_RANDOM_LENGTH="${CONFIG_SLAB_QUARANTINE_RANDOM_LENGTH}" \
-				CONFIG_SLAB_QUARANTINE_QUEUE_LENGTH="${CONFIG_SLAB_QUARANTINE_QUEUE_LENGTH}" \
-				CONFIG_GUARD_SLABS_INTERVAL="${CONFIG_GUARD_SLABS_INTERVAL}" \
-				CONFIG_GUARD_SIZE_DIVISOR="${CONFIG_GUARD_SIZE_DIVISOR}" \
-				CONFIG_REGION_QUARANTINE_RANDOM_LENGTH="${CONFIG_REGION_QUARANTINE_RANDOM_LENGTH}" \
-				CONFIG_REGION_QUARANTINE_QUEUE_LENGTH="${CONFIG_REGION_QUARANTINE_QUEUE_LENGTH}" \
-				CONFIG_REGION_QUARANTINE_SKIP_THRESHOLD="${CONFIG_REGION_QUARANTINE_SKIP_THRESHOLD}" \
-				CONFIG_FREE_SLABS_QUARANTINE_RANDOM_LENGTH="${CONFIG_FREE_SLABS_QUARANTINE_RANDOM_LENGTH}" \
-				CONFIG_CLASS_REGION_SIZE="${CONFIG_CLASS_REGION_SIZE}" \
-				CONFIG_N_ARENA="${CONFIG_N_ARENA}" \
-				CONFIG_STATS="${CONFIG_STATS}" \
-				CONFIG_EXTENDED_SIZE_CLASSES="${CONFIG_EXTENDED_SIZE_CLASSES}" \
-				CONFIG_LARGE_SIZE_CLASSES="${CONFIG_LARGE_SIZE_CLASSES}" || die
-			popd
-			mv "${S}"/libhardened_malloc.so .
-		)
+		local OUT="${PWD}"
+		cd "${S}"
+		emake VARIANT=gentoo SUFFIX= OUT="${OUT}" || die
 	fi
 }
 
