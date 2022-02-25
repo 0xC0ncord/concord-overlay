@@ -3,7 +3,7 @@
 <pkgmetadata>
 	<use>
 		<flag name="hiredis">Use <pkg>dev-python/txredisapi</pkg> for high performance redis caching</flag>
-		<flag name="oidc">Use <pkg>dev-python/authlib</pkg> for OpenID Connect authentication</flag>
+		<flag name="oidc">Use <pkg>dev-python/Authlib</pkg> for OpenID Connect authentication</flag>
 		<flag name="redis">Use <pkg>dev-db/redis</pkg> for multiple worker configurations</flag>
 		<flag name="saml">Use <pkg>dev-python/pysaml2</pkg> SAML authentication support</flag>
 		<flag name="sentry">Use <pkg>dev-python/sentry-sdk</pkg> for error tracking and performance monitoring</flag>

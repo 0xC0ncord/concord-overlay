@@ -20,7 +20,7 @@ fi
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64"
 
 IUSE="hiredis ldap oidc postgres redis saml sentry systemd +url-preview"
 REQUIRED_USE="hiredis? ( redis )"
@@ -50,7 +50,6 @@ RDEPEND="
 	>=dev-python/msgpack-0.5.2[${PYTHON_USEDEP}]
 	>=dev-python/phonenumbers-8.2.0[${PYTHON_USEDEP}]
 	>=dev-python/prometheus_client-0.4.0[${PYTHON_USEDEP}]
-	<dev-python/prometheus_client-0.13.0[${PYTHON_USEDEP}]
 	>=dev-python/attrs-17.4.0[${PYTHON_USEDEP}]
 	>=dev-python/netaddr-0.7.18[${PYTHON_USEDEP}]
 	>=dev-python/jinja-2.9[${PYTHON_USEDEP}]
@@ -58,7 +57,7 @@ RDEPEND="
 	>=dev-python/typing-extensions-3.7.4[${PYTHON_USEDEP}]
 	>=dev-python/cryptography-3.4.7[${PYTHON_USEDEP}]
 	>=dev-python/ijson-3.1.0[${PYTHON_USEDEP}]
-	=dev-python/matrix-python-common-1.0.0[${PYTHON_USEDEP}]
+	=dev-python/matrix-python-common-1.0.0:0=[${PYTHON_USEDEP}]
 
 	>=dev-python/daemonize-2.3.1[${PYTHON_USEDEP}]
 	>=dev-python/psutil-2.0.0[${PYTHON_USEDEP}]
@@ -67,9 +66,9 @@ RDEPEND="
 
 	hiredis? ( dev-python/hiredis[${PYTHON_USEDEP}] )
 	ldap? ( >=dev-python/matrix-synapse-ldap3-0.1[${PYTHON_USEDEP}] )
-	oidc? ( >=dev-python/authlib-0.14.0[${PYTHON_USEDEP}] )
+	oidc? ( >=dev-python/Authlib-0.14.0[${PYTHON_USEDEP}] )
 	postgres? ( >=dev-python/psycopg-2.8[${PYTHON_USEDEP}] )
-	!postgres? ( dev-lang/python[sqlite,${PYTHON_USEDEP}] )
+	!postgres? ( dev-lang/python[sqlite] )
 	redis? ( dev-db/redis
 			>=dev-python/txredisapi-1.4.7[${PYTHON_USEDEP}]
 			dev-python/redis-py[${PYTHON_USEDEP}]
