@@ -57,7 +57,7 @@ RDEPEND="
 	>=dev-python/typing-extensions-3.7.4[${PYTHON_USEDEP}]
 	>=dev-python/cryptography-3.4.7[${PYTHON_USEDEP}]
 	>=dev-python/ijson-3.1.0[${PYTHON_USEDEP}]
-	=dev-python/matrix-python-common-1.0.0:0=[${PYTHON_USEDEP}]
+	>=dev-python/matrix-python-common-1.1.0:0=[${PYTHON_USEDEP}]
 
 	>=dev-python/daemonize-2.3.1[${PYTHON_USEDEP}]
 	>=dev-python/psutil-2.0.0[${PYTHON_USEDEP}]
