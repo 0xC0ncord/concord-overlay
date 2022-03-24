@@ -20,7 +20,7 @@ fi
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="amd64"
 
 IUSE="hiredis ldap oidc postgres redis saml sentry systemd +url-preview"
 REQUIRED_USE="hiredis? ( redis )"
