@@ -20,7 +20,7 @@ fi
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="amd64"
+KEYWORDS="~amd64"
 
 IUSE="hiredis ldap oidc postgres redis saml sentry systemd +url-preview"
 REQUIRED_USE="hiredis? ( redis )"
@@ -53,6 +53,7 @@ RDEPEND="
 	>=dev-python/attrs-17.4.0[${PYTHON_USEDEP}]
 	>=dev-python/netaddr-0.7.18[${PYTHON_USEDEP}]
 	>=dev-python/jinja-2.9[${PYTHON_USEDEP}]
+	<dev-python/jinja-3.1.0[${PYTHON_USEDEP}]
 	>=dev-python/bleach-1.4.3[${PYTHON_USEDEP}]
 	>=dev-python/typing-extensions-3.7.4[${PYTHON_USEDEP}]
 	>=dev-python/cryptography-3.4.7[${PYTHON_USEDEP}]
