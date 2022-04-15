@@ -712,6 +712,9 @@ pkg_postinst() {
 		echo
 		elog "Before using miniflux, you must first create and initialize the database"
 		elog "and enable the hstore extension for it."
+		elog ""
+		elog "Afterwards, create your first admin user by running:"
+		elog "  miniflux -create-admin"
 	else
 		# This is an existing installation
 

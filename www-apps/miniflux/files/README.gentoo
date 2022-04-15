@@ -39,6 +39,26 @@ schema migration:
   ALTER USER miniflux WITH NOSUPERUSER;
 
 
+Create the First Admin User
+===========================
+
+The easiest way to create the first admin user with your new miniflux instance
+is by running:
+
+  miniflux -create-admin
+
+Alternatively, set the DATABASE_URL, RUN_MIGRATIONS, CREATE_ADMIN,
+ADMIN_USERNAME, and ADMIN_PASSWORD variables in your config file or run miniflux
+with these set as environment variables. For example:
+
+  export DATABASE_URL=postgres://miniflux:secretpassword@db/miniflux
+  export RUN_MIGRATIONS=1
+  export CREATE_ADMIN=1
+  export ADMIN_USERNAME=admin
+  export ADMIN_PASSWORD=n0tAstrongPassw0rd!
+  miniflux
+
+
 Migrating the Database
 ======================
 
