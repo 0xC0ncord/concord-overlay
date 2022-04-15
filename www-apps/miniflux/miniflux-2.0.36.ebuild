@@ -736,9 +736,14 @@ pkg_config() {
 
 	# Run in a subshell so we don't contaminate the environment
 	(
-		source "${EROOT}/etc/${PN}.conf" || die "Failed sourcing ${PN}.conf"
+		# Extract the database URL variable instead of just sourcing the config file
+		# because miniflux itself may interpret quotes as part of the URL
+		local DATABASE_URL="$(sed -n 's/^DATABASE_URL=\(.*\)/\1/p' /etc/${PN}.conf)"
+		[[ -n "${DATABASE_URL}" ]] || die "Failed getting DATABASE_URL from config file"
 		export DATABASE_URL
+
 		"${EROOT}"/usr/bin/miniflux -migrate || die "miniflux -migrate failed. Please check the above output for errors."
 	)
+	echo
 	elog "Database migrations complete."
 }
