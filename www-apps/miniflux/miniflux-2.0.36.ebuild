@@ -719,7 +719,7 @@ pkg_postinst() {
 		# This is an existing installation
 
 		echo
-		elog "To finish upgrading, database migrations must be performed."
+		elog "If you are upgrading from a previous version, schema migrations must be performed."
 		elog "To perform the migrations, stop the daemon, back up your database, and run:"
 		elog "  emerge --config =${PF}"
 	fi
