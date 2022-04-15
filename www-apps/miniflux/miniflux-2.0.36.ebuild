@@ -741,7 +741,7 @@ pkg_config() {
 	(
 		# Extract the database URL variable instead of just sourcing the config file
 		# because miniflux itself may interpret quotes as part of the URL
-		local DATABASE_URL="$(sed -n 's/^DATABASE_URL=\(.*\)/\1/p' /etc/${PN}.conf)"
+		local DATABASE_URL="$(sed -n 's/^DATABASE_URL=\(.*\)/\1/p' ${EROOT}/etc/${PN}.conf)"
 		[[ -n "${DATABASE_URL}" ]] || die "Failed getting DATABASE_URL from config file"
 		export DATABASE_URL
 
