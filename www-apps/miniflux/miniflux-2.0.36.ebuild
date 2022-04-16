@@ -673,12 +673,6 @@ src_compile() {
 }
 
 src_install() {
-	local DOCS=(
-		ChangeLog
-		README.md
-		"${FILESDIR}"/README.gentoo
-	)
-
 	dobin miniflux
 
 	insinto /etc
@@ -687,8 +681,11 @@ src_install() {
 	if ! use acct; then
 		# If no user account, run as root instead
 
-		sed "s/\(MINIFLUX_USER:=\)${PN}/\1root/" "${FILESDIR}/${PN}.initd" | newinitd - ${PN}
-		sed "s/\(User=\)${PN}/\1root/" "${FILESDIR}/${PN}.service" | systemd_newunit - ${PN}.service
+		sed "s/\(MINIFLUX_USER:=\)${PN}/\1root/" "${FILESDIR}/${PN}.initd" >${T}/${PN} || die
+		sed "s/\(User=\)${PN}/\1root/" "${FILESDIR}/${PN}.service" >${T}/${PN}.service || die
+
+		doinitd ${T}/${PN}
+		systemd_dounit ${T}/${PN}
 
 		fowners root:root /etc/${PN}.conf
 	else
@@ -700,6 +697,13 @@ src_install() {
 
 	fperms o-rwx /etc/${PN}.conf
 
+	local DOCS=(
+		ChangeLog
+		README.md
+		"${FILESDIR}"/README.gentoo
+	)
+
+	# Makefile has no install target, so call einstalldocs directly
 	einstalldocs
 
 	doman "${PN}".1
@@ -720,7 +724,7 @@ pkg_postinst() {
 
 		echo
 		elog "If you are upgrading from a previous version, schema migrations must be performed."
-		elog "To perform the migrations, stop the daemon, back up your database, and run:"
+		elog "To perform the migrations, stop the daemon, backup your database, and run:"
 		elog "  emerge --config =${PF}"
 	fi
 
@@ -733,20 +737,18 @@ pkg_postinst() {
 }
 
 pkg_config() {
+	# To be safe, avoid doing migrations if miniflux is running
 	if pgrep miniflux; then
 		die "miniflux appears to be running, refusing to continue."
 	fi
 
-	# Run in a subshell so we don't contaminate the environment
-	(
-		# Extract the database URL variable instead of just sourcing the config file
-		# because miniflux itself may interpret quotes as part of the URL
-		local DATABASE_URL="$(sed -n 's/^DATABASE_URL=\(.*\)/\1/p' ${EROOT}/etc/${PN}.conf)"
-		[[ -n "${DATABASE_URL}" ]] || die "Failed getting DATABASE_URL from config file"
-		export DATABASE_URL
+	# Extract the database URL variable instead of just sourcing the config file
+	# because miniflux itself may interpret quotes as part of the URL
+	local DATABASE_URL="$(sed -n 's/^DATABASE_URL=\(.*\)/\1/p' ${EROOT}/etc/${PN}.conf)"
+	[[ -n "${DATABASE_URL}" ]] || die "Failed getting DATABASE_URL from config file"
 
-		"${EROOT}"/usr/bin/miniflux -migrate || die "miniflux -migrate failed. Please check the above output for errors."
-	)
+	DATABASE_URL="${DATABASE_URL}" "${EROOT}"/usr/bin/miniflux -migrate || die "miniflux -migrate failed. Please check the above output for errors."
+
 	echo
 	elog "Database migrations complete."
 }
