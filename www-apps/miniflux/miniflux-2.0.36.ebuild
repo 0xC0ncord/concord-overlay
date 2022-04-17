@@ -658,10 +658,9 @@ SRC_URI="https://github.com/${PN}/v2/archive/${PV}.tar.gz -> ${P}.tar.gz
 LICENSE="Apache-2.0 BSD BSD-2 MIT"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="+acct"
+IUSE=""
 
-COMMON_DEPEND="acct? ( acct-user/miniflux )"
-DEPEND="${COMMON_DEPEND}"
+DEPEND="acct-user/miniflux"
 RDEPEND="${DEPEND}
 	>=dev-db/postgresql-9.5
 "
@@ -678,23 +677,10 @@ src_install() {
 	insinto /etc
 	doins "${FILESDIR}/${PN}.conf"
 
-	if ! use acct; then
-		# If no user account, run as root instead
+	newinitd "${FILESDIR}/${PN}.initd" ${PN}
+	systemd_dounit "${FILESDIR}/${PN}.service"
 
-		sed "s/\(MINIFLUX_USER:=\)${PN}/\1root/" "${FILESDIR}/${PN}.initd" >${T}/${PN} || die
-		sed "s/\(User=\)${PN}/\1root/" "${FILESDIR}/${PN}.service" >${T}/${PN}.service || die
-
-		doinitd ${T}/${PN}
-		systemd_dounit ${T}/${PN}
-
-		fowners root:root /etc/${PN}.conf
-	else
-		newinitd "${FILESDIR}/${PN}.initd" ${PN}
-		systemd_dounit "${FILESDIR}/${PN}.service"
-
-		fowners miniflux:root /etc/${PN}.conf
-	fi
-
+	fowners miniflux:root /etc/${PN}.conf
 	fperms o-rwx /etc/${PN}.conf
 
 	local DOCS=(

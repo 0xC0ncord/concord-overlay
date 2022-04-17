@@ -3,11 +3,11 @@
 # Distributed under the terms of the GNU General Public License v2
 
 : ${MINIFLUX_USER:=miniflux}
-: ${MINIFLUX_GROUP:=nogroup}
+: ${MINIFLUX_GROUP:=nobody}
 : ${MINIFLUX_CONF:=/etc/miniflux.conf}
 
 name="miniflux daemon"
-description=""
+description="Miniflux Web Server"
 command=/usr/bin/miniflux
 command_args="${miniflux_args} -c ${MINIFLUX_CONF}"
 command_background="true"

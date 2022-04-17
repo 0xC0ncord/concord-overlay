@@ -8,10 +8,5 @@
 	<upstream>
 		<remote-id type="github">miniflux/v2</remote-id>
 	</upstream>
-	<use>
-		<flag name="acct">
-			Create and use the miniflux user account to run the miniflux server
-		</flag>
-	</use>
 </pkgmetadata>
 
