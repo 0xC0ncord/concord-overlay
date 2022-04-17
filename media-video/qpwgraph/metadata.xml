@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>me@concord.sh</email>
+		<name>0xC0ncord</name>
+	</maintainer>
+	<use>
+		<flag name="midi">
+			Enable ALSA MIDI support
+		</flag>
+		<flag name="tray">
+			Enable system-tray icon support
+		</flag>
+	</use>
+</pkgmetadata>
+
