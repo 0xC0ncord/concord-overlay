@@ -12,13 +12,19 @@ SRC_URI="https://github.com/containers/${PN}/archive/refs/tags/v${PV}.tar.gz -> 
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64"
 
-DEPEND=""
 RDEPEND="${DEPEND}"
-BDEPEND=""
 
 python_install_all() {
 	distutils-r1_python_install_all
+
+	# Remove sample ansible playbook; it assumes we are using container-selinux
+	# which is not supported on refpolicy
+	rm -rf "${D}/usr/share/udica" || die
+
+	# Remove unnecessary copy of GPL-3 license that gets installed
+	rm -rf "${D}/usr/share/licenses" || die
+
 	doman "${PN}/man/man8/${PN}.8"
 }
