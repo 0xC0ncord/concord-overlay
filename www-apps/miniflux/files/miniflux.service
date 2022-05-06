@@ -14,7 +14,6 @@ After=postgresql-14.service
 
 [Service]
 User=miniflux
-Group=nobody
 ExecStart=/usr/bin/miniflux -c /etc/miniflux.conf
 Restart=always
 PrivateTmp=true
