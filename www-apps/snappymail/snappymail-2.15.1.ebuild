@@ -1,7 +1,7 @@
 # Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit webapp
 
@@ -11,22 +11,27 @@ SRC_URI="https://github.com/the-djmaze/${PN}/releases/download/v${PV}/${P}.tar.g
 
 LICENSE="AGPL-3"
 KEYWORDS="~amd64"
-IUSE=""
-REQUIRED_USE=""
 
-RDEPEND=">=dev-lang/php-7.4
-		virtual/httpd-php"
+RDEPEND=">=dev-lang/php-7.3[imap]
+	virtual/httpd-php"
 
 need_httpd_cgi
 
-RESTRICT="test"
-
 S="${WORKDIR}"
+
+pkg_setup() {
+	webapp_pkg_setup
+}
 
 src_install() {
 	webapp_src_preinst
 
-	rm README.md
+	local DOCS=(
+		README.md
+	)
+	einstalldocs
+
+	rm README.md || die
 
 	mv _include.php include.php || die
 
