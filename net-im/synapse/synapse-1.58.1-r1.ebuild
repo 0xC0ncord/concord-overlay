@@ -4,6 +4,7 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{6..10} )
+DISTUTILS_USE_SETUPTOOLS=pyproject.toml
 inherit distutils-r1 systemd
 
 MY_PV="${PV/_rc/rc}"
