@@ -30,7 +30,6 @@ src_install() {
 		README.md
 	)
 	einstalldocs
-
 	rm README.md || die
 
 	mv _include.php include.php || die
