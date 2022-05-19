@@ -26,10 +26,7 @@ pkg_setup() {
 src_install() {
 	webapp_src_preinst
 
-	local DOCS=(
-		README.md
-	)
-	einstalldocs
+	dodoc README.md
 	rm README.md || die
 
 	mv _include.php include.php || die
