@@ -21,6 +21,7 @@ DEPEND="sys-apps/pciutils
 RDEPEND="${DEPEND}"
 
 src_prepare() {
+	default
 	eautoreconf
 }
 
