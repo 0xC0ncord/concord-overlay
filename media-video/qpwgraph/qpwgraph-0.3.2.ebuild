@@ -1,13 +1,15 @@
-# Copyright 2022 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 inherit cmake xdg
 
+MY_P="${PN}-v${PV}"
+
 DESCRIPTION="A pipewire graph Qt GUI interface"
-HOMEPAGE="https://gitlab.freedesktop.org/rncbc/qpwgraph/"
-SRC_URI="https://gitlab.freedesktop.org/rncbc/${PN}/-/archive/v${PV}/${PN}-v${PV}.tar.gz -> ${P}.tar.gz"
+HOMEPAGE="https://gitlab.freedesktop.org/rncbc/qpwgraph"
+SRC_URI="https://gitlab.freedesktop.org/rncbc/${PN}/-/archive/v${PV}/${MY_P}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2+"
 SLOT="0"
@@ -25,7 +27,7 @@ DEPEND="dev-qt/qtcore:5
 "
 RDEPEND="${DEPEND}"
 
-S="${WORKDIR}/${PN}-v${PV}"
+S="${WORKDIR}/${MY_P}"
 
 src_configure() {
 	local mycmakeargs=(
