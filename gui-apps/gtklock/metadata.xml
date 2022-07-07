@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>concord@gentoo.org</email>
+		<name>Kenton Groombridge</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">jovanlanik/gtklock</remote-id>
+		<maintainer status="active">
+			<email>jox969@gmail.com</email>
+			<name>Jovan Lanik</name>
+		</maintainer>
+		<bugs-to>https://github.com/jovanlanik/gtklock/issues</bugs-to>
+		<doc>https://github.com/jovanlanik/gtklock/wiki</doc>
+		<changelog>https://github.com/jovanlanik/gtklock/releases</changelog>
+	</upstream>
+</pkgmetadata>
