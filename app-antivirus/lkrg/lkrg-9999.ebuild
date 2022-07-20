@@ -25,7 +25,7 @@ if [[ ${PV} != 9999 ]]; then
 	VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}/usr/share/openpgp-keys/openwall.asc"
 fi
 
-MODULE_NAMES="p_lkrg(misc:${S}:${S})"
+MODULE_NAMES="lkrg(misc:${S}:${S})"
 
 pkg_setup() {
 	CONFIG_CHECK="HAVE_KRETPROBES KALLSYMS_ALL KPROBES JUMP_LABEL"
