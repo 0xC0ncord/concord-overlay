@@ -7,7 +7,7 @@ inherit cmake multilib-minimal
 
 DESCRIPTION="CUnit is a Unit testing framework for C"
 HOMEPAGE="https://gitlab.com/cunity/cunit"
-SRC_URI="https://gitlab.com/cunity/cunit/-/archive/${PV}/${P}.tar.bz2"
+SRC_URI="https://gitlab.com/cunity/${PN}/-/archive/${PV}/${P}.tar.bz2"
 
 LICENSE="LGPL-2"
 SLOT="0"
