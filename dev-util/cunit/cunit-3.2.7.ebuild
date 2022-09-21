@@ -27,7 +27,6 @@ src_prepare() {
 multilib_src_configure() {
 	local -a mycmakeargs=(
 		-DCMAKE_INSTALL_LIBDIR=$(get_libdir)
-		-DCUNIT_DISABLE_EXAMPLES=$(usex examples OFF ON)
 		-DCUNIT_DISABLE_TESTS=$(usex test OFF ON)
 	)
 
@@ -40,4 +39,11 @@ multilib_src_compile() {
 
 multilib_src_install() {
 	cmake_src_install
+}
+
+multilib_src_install_all() {
+	use examples || return 0
+
+	mv "${S}"/Examples "${S}"/examples || die
+	dodoc -r "${S}"/examples
 }
