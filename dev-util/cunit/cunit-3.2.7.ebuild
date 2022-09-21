@@ -11,7 +11,7 @@ SRC_URI="https://gitlab.com/cunity/cunit/-/archive/${PV}/${P}.tar.bz2"
 
 LICENSE="LGPL-2"
 SLOT="0"
-KEYWORDS="amd64"
+KEYWORDS="~amd64"
 IUSE="examples test"
 
 src_prepare() {
