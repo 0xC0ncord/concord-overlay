@@ -27,6 +27,7 @@ src_prepare() {
 multilib_src_configure() {
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_LIBDIR=$(get_libdir)
+		-DCUNIT_DISABLE_EXAMPLES=ON # dont actually build example programs
 		-DCUNIT_DISABLE_TESTS=$(usex test OFF ON)
 	)
 
