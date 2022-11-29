@@ -6,59 +6,66 @@
 EAPI=8
 
 CRATES="
-	aho-corasick-0.7.18
+	aho-corasick-0.7.20
 	atty-0.2.14
 	autocfg-1.1.0
 	bitflags-1.3.2
-	cc-1.0.73
+	cc-1.0.77
 	cfg-if-1.0.0
-	concat-idents-1.1.3
+	concat-idents-1.1.4
 	dlib-0.5.0
 	downcast-rs-1.2.0
-	env_logger-0.9.0
-	fastrand-1.7.0
-	futures-channel-0.3.21
-	futures-core-0.3.21
-	futures-macro-0.3.21
-	futures-task-0.3.21
-	futures-util-0.3.21
+	env_logger-0.9.3
+	fastrand-1.8.0
+	futures-channel-0.3.25
+	futures-core-0.3.25
+	futures-macro-0.3.25
+	futures-task-0.3.25
+	futures-util-0.3.25
 	hermit-abi-0.1.19
 	humantime-2.1.0
 	instant-0.1.12
+	io-lifetimes-1.0.0-rc1
 	lazy_static-1.4.0
-	libc-0.2.126
-	libloading-0.7.3
+	libc-0.2.137
+	libloading-0.7.4
 	log-0.4.17
 	memchr-2.5.0
 	memoffset-0.6.5
 	minimal-lexical-0.2.1
-	nix-0.24.1
+	nix-0.25.0
 	nom-7.1.1
 	pin-project-lite-0.2.9
 	pin-utils-0.1.0
-	pkg-config-0.3.25
-	proc-macro2-1.0.40
-	quote-1.0.20
-	redox_syscall-0.2.13
-	regex-1.6.0
-	regex-syntax-0.6.27
+	pkg-config-0.3.26
+	proc-macro2-1.0.47
+	quick-xml-0.23.1
+	quote-1.0.21
+	redox_syscall-0.2.16
+	regex-1.7.0
+	regex-syntax-0.6.28
 	remove_dir_all-0.5.3
-	scoped-tls-1.0.0
-	similar-2.1.0
-	slab-0.4.6
-	smallvec-1.9.0
-	syn-1.0.98
+	scoped-tls-1.0.1
+	similar-2.2.1
+	slab-0.4.7
+	smallvec-1.10.0
+	syn-1.0.104
 	tempfile-3.3.0
 	termcolor-1.1.3
-	thiserror-1.0.31
-	thiserror-impl-1.0.31
-	unicode-ident-1.0.1
+	thiserror-1.0.37
+	thiserror-impl-1.0.37
+	unicode-ident-1.0.5
 	winapi-0.3.9
 	winapi-i686-pc-windows-gnu-0.4.0
 	winapi-util-0.1.5
 	winapi-x86_64-pc-windows-gnu-0.4.0
+	windows-sys-0.36.1
+	windows_aarch64_msvc-0.36.1
+	windows_i686_gnu-0.36.1
+	windows_i686_msvc-0.36.1
+	windows_x86_64_gnu-0.36.1
+	windows_x86_64_msvc-0.36.1
 	xcursor-0.3.4
-	xml-rs-0.8.4
 "
 
 inherit cargo
