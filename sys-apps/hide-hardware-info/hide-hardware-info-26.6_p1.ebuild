@@ -1,22 +1,20 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-MY_PV="20.6-1"
+MY_PV="${PV/_p/-}"
+
 DESCRIPTION="Hide hardware information to unprivileged users"
 HOMEPAGE="https://github.com/Whonix/security-misc"
-SRC_URI="https://github.com/Whonix/security-misc/archive/${MY_PV}.tar.gz"
+SRC_URI="https://github.com/Whonix/security-misc/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-3+"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
 
-DEPEND=""
+DEPEND="app-shells/bash"
 RDEPEND="${DEPEND}"
-
-PATCHES="${FILESDIR}/hide-hardware-info-unit-exec-location.patch"
 
 S="${WORKDIR}/security-misc-${MY_PV}"
 
@@ -25,11 +23,13 @@ src_compile(){
 }
 
 src_install() {
-	dobin usr/lib/security-misc/hide-hardware-info
+	dobin usr/libexec/security-misc/hide-hardware-info
 
 	newinitd "${FILESDIR}/hide-hardware-info.initd-r1" hide-hardware-info
 
 	insinto /lib/systemd/system
+	sed -i 's|^ExecStart=.*|ExecStart=/usr/bin/hide-hardware-info|' \
+		lib/systemd/system/hide-hardware-info.service || die
 	doins lib/systemd/system/hide-hardware-info.service
 
 	insinto /etc
