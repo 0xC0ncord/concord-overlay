@@ -25,6 +25,7 @@ IUSE="test"
 RESTRICT="!test? ( test )"
 
 RDEPEND="
+	dev-python/colorama[${PYTHON_USEDEP}]
 	sys-fs/zfs
 "
 
