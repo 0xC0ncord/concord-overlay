@@ -511,41 +511,37 @@ declare -A GIT_CRATES=(
 
 inherit bash-completion-r1 cargo
 
-MY_PN="kanidm"
 MY_PV="${PV/alpha/alpha.}"
 MY_PV="${MY_PV/_/-}"
-MY_P="${MY_PN}-${MY_PV}"
+MY_P="kanidm-${MY_PV}"
 
 DESCRIPTION="Kanidm Client Tools"
 HOMEPAGE="https://kanidm.com https://github.com/kanidm/kanidm"
-SRC_URI="https://github.com/kanidm/kanidm/archive/v${MY_PV}.tar.gz -> ${MY_PN}-${PV}.tar.gz"
+SRC_URI="https://github.com/kanidm/kanidm/archive/v${MY_PV}.tar.gz -> kanidm-${PV}.tar.gz"
 SRC_URI+=" $(cargo_crate_uris)"
 
-LICENSE="0BSD Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD BSD-2 BlueOak-1.0.0 Boost-1.0 CC0-1.0 LGPL-3 MIT MPL-2.0 MPL-2.0+ Unicode-DFS-2016 Unlicense ZLIB"
+LICENSE="0BSD Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD BSD-2 BlueOak-1.0.0 Boost-1.0 CC0-1.0 LGPL-3 MIT MPL-2.0 Unicode-DFS-2016 Unlicense ZLIB"
 SLOT="0"
 KEYWORDS="~amd64"
 
-DEPEND=""
-RDEPEND="${DEPEND}"
-BDEPEND=""
-
 # rust does not use *FLAGS from make.conf, silence portage warning
 # update with proper path to binaries this crate installs, omit leading /
-QA_FLAGS_IGNORED="usr/bin/${PN}"
+QA_FLAGS_IGNORED="usr/bin/kanidm"
 
 S="${WORKDIR}/${MY_P}"
 
 src_compile() {
-	cargo_src_compile -p "${PN/-/_}"
+	# --bin to avoid building unneeded ssh keys client
+	cargo_src_compile -p "${PN/-/_}" --bin kanidm
 }
 
 src_install() {
-	cargo_src_install --path "${PN/-/_}"
+	dobin target/release/kanidm
 
 	insinto /etc/kanidm
 	doins examples/config
 
-	dobashcomp target/release/build/completions/"${MY_PN}".bash
+	newbashcomp target/release/build/completions/kanidm.bash kanidm
 	insinto /usr/share/zsh/site-functions
-	doins target/release/build/completions/_"${MY_PN}"
+	doins target/release/build/completions/_kanidm
 }
