@@ -36,6 +36,7 @@ src_install() {
 	newins "${FILESDIR}"/${PN}-sudoers ${PN}
 
 	insinto /usr/share/${PN}
+	sed -i 's/[[:space:]]\{8\}/\t/g' ipmi_{local,remote}.yml || die
 	doins ipmi_local.yml
 	doins ipmi_remote.yml
 }

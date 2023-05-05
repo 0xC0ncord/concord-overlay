@@ -1,4 +1,4 @@
-!log_allowed
+Defaults:ipmi-exporter !log_allowed
 ipmi-exporter ALL = NOPASSWD: /usr/bin/ipmimonitoring,\
                               /usr/bin/ipmi-sensors,\
                               /usr/bin/ipmi-dcmi,\
