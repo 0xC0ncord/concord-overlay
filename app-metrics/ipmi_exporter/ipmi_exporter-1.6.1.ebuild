@@ -39,4 +39,8 @@ src_install() {
 	sed -i 's/[[:space:]]\{8\}/\t/g' ipmi_{local,remote}.yml || die
 	doins ipmi_local.yml
 	doins ipmi_remote.yml
+
+	# restrict permissions on config  file as it may contain passwords
+	fowners ipmi-exporter: /etc/conf.d/${PN}
+	fperms 0600 /etc/conf.d/${PN}
 }
