@@ -27,7 +27,12 @@ src_install() {
 	dobin ${PN}
 	dodoc README.md
 
-	newconfd ipmi_local.yml ${PN}
+	insinto /etc
+	newins ipmi_local.yml ${PN}.yml
+
+	# restrict permissions on config file as it may contain passwords
+	fowners ipmi-exporter: /etc/${PN}.yml
+	fperms 0600 /etc/${PN}.yml
 
 	newinitd "${FILESDIR}"/${PN}.initd ${PN}
 	systemd_dounit "${FILESDIR}"/${PN}.service
@@ -38,8 +43,4 @@ src_install() {
 	insinto /usr/share/${PN}
 	doins ipmi_local.yml
 	doins ipmi_remote.yml
-
-	# restrict permissions on config  file as it may contain passwords
-	fowners ipmi-exporter: /etc/conf.d/${PN}
-	fperms 0600 /etc/conf.d/${PN}
 }
