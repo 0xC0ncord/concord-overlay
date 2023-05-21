@@ -548,10 +548,12 @@ S="${WORKDIR}/${MY_P}"
 src_compile() {
 	export KANIDM_BUILD_PROFILE=release_suse_generic
 	cargo_src_compile --bin kanidmd
+	cargo_src_compile -p kanidm-ipa-sync
 }
 
 src_install() {
 	dosbin target/release/kanidmd
+	dosbin target/release/kanidm-ipa-sync
 
 	insinto /etc/kanidm
 	doins examples/server.toml
