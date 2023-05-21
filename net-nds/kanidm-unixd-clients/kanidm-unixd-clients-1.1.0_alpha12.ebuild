@@ -531,6 +531,7 @@ IUSE="doc"
 PDEPEND="doc? ( ~app-doc/kanidm-docs-${PV} )"
 RDEPEND="
 	acct-user/kanidm-unixd
+	~net-nds/kanidm-clients-${PV}
 	dev-libs/openssl:=
 	sys-libs/pam
 	virtual/udev
