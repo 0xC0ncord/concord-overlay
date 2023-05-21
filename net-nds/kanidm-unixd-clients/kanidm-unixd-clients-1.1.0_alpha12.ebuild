@@ -563,7 +563,7 @@ src_install() {
 	dosbin target/release/kanidm_ssh_authorizedkeys_direct
 
 	newlib.so target/release/libnss_kanidm.so libnss_kanidm.so.2
-	dopammod target/release/libpam_kanidm.so
+	newpammod target/release/libpam_kanidm.so pam_kanidm.so
 
 	dosbin target/release/kanidm_unixd
 	dosbin target/release/kanidm_unixd_tasks
