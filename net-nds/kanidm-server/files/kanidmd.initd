@@ -1,0 +1,30 @@
+#!/sbin/openrc-run
+# Copyright 2023 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+KANIDMD_CONF="${KANIDMD_CONF:-/etc/kanidm/server.toml}"
+
+name="kanidm server"
+description="Kanidm Identity Server"
+command=/usr/sbin/kanidmd
+command_args="${kanidmd_args} server -c ${KANIDMD_CONF}"
+command_background="true"
+command_user="${KANIDMD_USER}:${KANIDMD_GROUP}"
+output_log="/var/log/${RC_SVCNAME}.log"
+pidfile="/run/${RC_SVCNAME}.pid"
+
+start_pre() {
+    checkpath --file --owner "${KANIDMD_USER}":root --mode 0600 \
+        "${output_log}"
+}
+
+stop() {
+    ebegin "Stopping kanidmd"
+    start-stop-daemon --stop --quiet --signal INT \
+        --pidfile "${pidfile}"
+    eend $?
+}
+
+stop_post() {
+    rm -f "${pidfile}"
+}
