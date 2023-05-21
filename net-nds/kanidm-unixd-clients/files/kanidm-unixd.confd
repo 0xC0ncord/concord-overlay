@@ -1,0 +1,7 @@
+# User and group kanidm-unixd should run as
+KANIDM_UNIXD_USER=kanidm-unixd
+KANIDM_UNIXD_GROUP=nobody
+
+# Config files kanidm-unixd should use
+KANIDM_UNIXD_CLIENT_CONF=/etc/kanidm/config
+KANIDM_UNIXD_UNIX_CONF=/etc/kanidm/unixd

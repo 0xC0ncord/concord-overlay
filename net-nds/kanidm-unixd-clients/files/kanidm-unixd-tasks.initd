@@ -1,0 +1,12 @@
+#!/sbin/openrc-run
+# Copyright 2023 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="kanidm unixd tasks"
+description="Kanidm Local Tasks"
+command=/usr/sbin/kanidm-unixd-tasks
+command_args="${kanidm_unixd_tasks_args}"
+command_background="true"
+command_user="root:root"
+error_log="/var/log/${RC_SVCNAME}.log"
+pidfile="/run/${RC_SVCNAME}.pid"
