@@ -579,10 +579,6 @@ src_install() {
 	systemd_dounit platform/opensuse/kanidm-unixd-tasks.service
 	systemd_install_serviced "${FILESDIR}"/kanidm-unixd.service.conf
 
-	keepdir /var/cache/kanidm-unixd
-	fowners kanidm-unixd:root /var/cache/kanidm-unixd
-	fperms 0700 /var/cache/kanidm-unixd
-
 	newbashcomp target/release/build/completions/kanidm_ssh_authorizedkeys.bash kanidm_ssh_authorizedkeys
 	newbashcomp target/release/build/completions/kanidm_ssh_authorizedkeys_direct.bash kanidm_ssh_authorizedkeys_direct
 	newbashcomp target/release/build/completions/kanidm_unix.bash kanidm_unix

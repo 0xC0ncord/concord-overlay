@@ -17,6 +17,8 @@ pidfile="/run/${RC_SVCNAME}.pid"
 start_pre() {
     checkpath --file --owner "${KANIDM_UNIXD_USER}":root --mode 0600 \
         "${output_log}"
+    checkpath --directory --owner "${KANIDM_UNIXD_USER}":root --mode 0700 \
+        /var/cache/kanidm-unixd
     checkpath --directory --owner "${KANIDM_UNIXD_USER}":root --mode 0755 \
         /run/kanidm-unixd
 }
