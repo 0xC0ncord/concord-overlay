@@ -1,9 +1,9 @@
-# Copyright 2023 Gentoo Authors
+# Copyright 2023-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-MY_PV="${PV/alpha/alpha.}"
+MY_PV="${PV/rc/rc.}"
 MY_PV="${MY_PV/_/-}"
 MY_P="kanidm-${MY_PV}"
 
