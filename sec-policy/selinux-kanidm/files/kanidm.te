@@ -28,6 +28,9 @@ init_daemon_domain(kanidm_unixd_tasks_t, kanidm_unixd_tasks_exec_t)
 type kanidm_config_t;
 files_config_file(kanidm_config_t)
 
+type kanidmd_runtime_t;
+files_runtime_file(kanidmd_runtime_t)
+
 type kanidm_unixd_cache_t;
 files_type(kanidm_unixd_cache_t)
 
@@ -44,12 +47,16 @@ files_type(kanidm_var_lib_t)
 
 allow kanidmd_t self:process getsched;
 allow kanidmd_t self:tcp_socket create_stream_socket_perms;
+allow kanidmd_t self:unix_dgram_socket create_socket_perms;
 corenet_tcp_bind_generic_node(kanidmd_t)
 
 corenet_tcp_bind_http_port(kanidmd_t)
 corenet_tcp_bind_servistaitsm_port(kanidmd_t)
 
 read_files_pattern(kanidmd_t, kanidm_config_t, kanidm_config_t)
+
+manage_sock_files_pattern(kanidmd_t, kanidmd_runtime_t, kanidmd_runtime_t)
+files_runtime_filetrans(kanidmd_t, kanidmd_runtime_t, sock_file)
 
 manage_dirs_pattern(kanidmd_t, kanidm_var_lib_t, kanidm_var_lib_t)
 mmap_manage_files_pattern(kanidmd_t, kanidm_var_lib_t, kanidm_var_lib_t)
@@ -64,9 +71,15 @@ fs_read_cgroup_files(kanidmd_t)
 
 kernel_read_vm_overcommit_sysctl(kanidmd_t)
 
+logging_send_syslog_msg(kanidmd_t)
+
 miscfiles_read_generic_certs(kanidmd_t)
 
 userdom_use_user_terminals(kanidmd_t)
+
+optional_policy(`
+        certbot_read_lib(kanidmd_t)
+')
 
 ########################################
 #
