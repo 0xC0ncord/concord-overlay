@@ -594,6 +594,17 @@ CRATES="
 	zxcvbn@2.2.2
 "
 
+declare -A GIT_CRATES=(
+	[base64urlsafedata]="https://github.com/kanidm/webauthn-rs;2218d2055c0c900ef57b398423eee5e8d5521f4c;webauthn-rs-%commit%/base64urlsafedata"
+	[webauthn-attestation-ca]="https://github.com/kanidm/webauthn-rs;2218d2055c0c900ef57b398423eee5e8d5521f4c;webauthn-rs-%commit%/attestation-ca"
+	[webauthn-authenticator-rs]="https://github.com/kanidm/webauthn-rs;2218d2055c0c900ef57b398423eee5e8d5521f4c;webauthn-rs-%commit%/webauthn-authenticator-rs"
+	[webauthn-rs]="https://github.com/kanidm/webauthn-rs;2218d2055c0c900ef57b398423eee5e8d5521f4c;webauthn-rs-%commit%/webauthn-rs"
+	[webauthn-rs-core]="https://github.com/kanidm/webauthn-rs;2218d2055c0c900ef57b398423eee5e8d5521f4c;webauthn-rs-%commit%/webauthn-rs-core"
+	[webauthn-rs-proto]="https://github.com/kanidm/webauthn-rs;2218d2055c0c900ef57b398423eee5e8d5521f4c;webauthn-rs-%commit%/webauthn-rs-proto"
+	[sshkey-attest]="https://github.com/kanidm/webauthn-rs;2218d2055c0c900ef57b398423eee5e8d5521f4c;webauthn-rs-%commit%/sshkey-attest"
+	[sshkeys]="https://github.com/dnaeon/rust-sshkeys;fa5bd02dd6e90ee724fdb981253c1e7726a7f534;rust-sshkeys-%commit%"
+)
+
 inherit bash-completion-r1 cargo
 
 MY_PV="${PV/rc/rc.}"
@@ -627,6 +638,9 @@ QA_FLAGS_IGNORED="usr/bin/kanidm"
 S="${WORKDIR}/${MY_P}"
 
 src_compile() {
+	sed -i "s|^\[patch.'https://github.com/kanidm/webauthn-rs'\]|[patch.crates-io]|" \
+		"${CARGO_HOME}"/config || die Failed patching cargo config
+
 	export KANIDM_BUILD_PROFILE=release_suse_generic
 	# --bin to avoid building unneeded ssh keys client
 	cargo_src_compile -p kanidm_tools --bin kanidm
