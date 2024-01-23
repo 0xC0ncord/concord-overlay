@@ -104,6 +104,9 @@ corecmd_exec_shell(kanidm_unixd_t)
 
 domain_use_interactive_fds(kanidm_unixd_t)
 
+# watch /etc/passwd
+files_watch_etc_files(kanidm_unixd_t)
+
 fs_read_cgroup_files(kanidm_unixd_t)
 
 kernel_read_system_state(kanidm_unixd_t)
