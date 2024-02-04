@@ -78,7 +78,7 @@ miscfiles_read_generic_certs(kanidmd_t)
 userdom_use_user_terminals(kanidmd_t)
 
 optional_policy(`
-        certbot_read_lib(kanidmd_t)
+	certbot_read_lib(kanidmd_t)
 ')
 
 ########################################
@@ -156,29 +156,44 @@ userdom_home_filetrans_user_home_dir(kanidm_unixd_tasks_t)
 userdom_user_home_dir_filetrans_user_home_content(kanidm_unixd_tasks_t, { dir file lnk_file sock_file fifo_file })
 
 optional_policy(`
-        gen_require(`
-                type semanage_exec_t;
-                type semanage_t;
-        ')
-        allow kanidm_unixd_tasks_t semanage_exec_t:file execute_no_trans;
-        allow kanidm_unixd_tasks_t semanage_t:process2 nnp_transition;
+	gen_require(`
+		type home_root_t;
+	')
+	allow kanidm_unixd_tasks_t home_root_t:lnk_file manage_lnk_file_perms;
+')
+
+optional_policy(`
+	gen_require(`
+		type semanage_exec_t;
+		type semanage_t;
+	')
+	allow kanidm_unixd_tasks_t semanage_exec_t:file execute_no_trans;
+	allow kanidm_unixd_tasks_t semanage_t:process2 nnp_transition;
+')
+
+optional_policy(`
+	gen_require(`
+	attribute nsswitch_domain;
+	')
+	read_files_pattern(nsswitch_domain, kanidm_config_t, kanidm_config_t)
+	stream_connect_pattern(nsswitch_domain, kanidm_unixd_runtime_t, kanidm_unixd_runtime_t, kanidm_unixd_t)
 ')
 
 tunable_policy(`kanidm_unixd_create_home_dirs',`
-        gen_require(`
-                type home_root_t;
-                type user_home_dir_t;
-        ')
-        allow kanidm_unixd_tasks_t self:capability { chown dac_read_search };
-        userdom_create_user_home_dirs(kanidm_unixd_tasks_t)
-        allow kanidm_unixd_tasks_t user_home_dir_t:dir setattr;
+	gen_require(`
+		type home_root_t;
+		type user_home_dir_t;
+	')
+	allow kanidm_unixd_tasks_t self:capability { chown dac_read_search };
+	userdom_create_user_home_dirs(kanidm_unixd_tasks_t)
+	allow kanidm_unixd_tasks_t user_home_dir_t:dir setattr;
 
-        # populate new home dirs from /etc/skel
-        userdom_manage_user_home_content_dirs(kanidm_unixd_tasks_t)
-        userdom_manage_user_home_content_files(kanidm_unixd_tasks_t)
-        userdom_manage_user_home_content_symlinks(kanidm_unixd_tasks_t)
+	# populate new home dirs from /etc/skel
+	userdom_manage_user_home_content_dirs(kanidm_unixd_tasks_t)
+	userdom_manage_user_home_content_files(kanidm_unixd_tasks_t)
+	userdom_manage_user_home_content_symlinks(kanidm_unixd_tasks_t)
 
-        # create alias symlinks
-        allow kanidm_unixd_tasks_t user_home_dir_t:lnk_file manage_lnk_file_perms;
-        filetrans_pattern(kanidm_unixd_tasks_t, home_root_t, user_home_dir_t, lnk_file)
+	# create alias symlinks
+	allow kanidm_unixd_tasks_t user_home_dir_t:lnk_file manage_lnk_file_perms;
+	filetrans_pattern(kanidm_unixd_tasks_t, home_root_t, user_home_dir_t, lnk_file)
 ')
