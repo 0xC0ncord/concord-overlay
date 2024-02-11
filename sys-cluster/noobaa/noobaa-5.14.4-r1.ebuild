@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit go-module
+inherit bash-completion-r1 go-module
 
 MY_PN="noobaa-operator"
 MY_P="${MY_PN}-${PV}"
@@ -25,5 +25,9 @@ src_compile() {
 
 src_install() {
 	newbin ./bin/noobaa-operator-local noobaa
+
+	./bin/noobaa-operator-local completion >noobaa.bash || die
+	newbashcomp noobaa.bash noobaa
+
 	dodoc -r doc README.md
 }
