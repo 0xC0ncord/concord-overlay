@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit go-module
+inherit bash-completion-r1 go-module
 
 # git rev-parse HEAD
 GIT_COMMIT=76670e940c52880a18dbbc59e3cbee7b94cd3352
@@ -36,6 +36,17 @@ src_compile() {
 src_install() {
 	dobin ./bin/velero
 	dobin ./bin/velero-restore-helper
+
+	./bin/${PN} completion bash > ${PN}.bash || die
+	newbashcomp ${PN}.bash ${PN}
+
+	./bin/${PN} completion zsh > ${PN}.zsh || die
+	insinto /usr/share/zsh/site-functions
+	newins ${PN}.zsh _${PN}
+
+	./bin/${PN} completion fish > ${PN}.fish || die
+	insinto /usr/share/fish/vendor_completions.d
+	newins ${PN}.fish ${PN}.fish
 
 	dodoc -r changelogs examples README.md
 }
