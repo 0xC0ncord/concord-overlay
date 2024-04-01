@@ -1,0 +1,25 @@
+Using
+-----
+To use hardened_malloc, either add it as a preloaded library to
+/etc/ld.so.preload, use the LD_PRELOAD environment variable, or include it
+manually in your LDFLAGS, keeping in mind link order.
+
+Note that some programs may break when using hardened_malloc.
+
+Make sure to raise vm.max_map_count substantially to accomodate the very large
+number of guard pages created by hardened_malloc. For example:
+
+  echo 'vm.max_map_count = 524240' > /etc/sysctl.d/hardened_malloc.conf
+
+Please read:
+
+  https://github.com/GrapheneOS/hardened_malloc#traditional-linux-based-operating-systems
+
+for more information.
+
+Multilib Systems
+----------------
+On multilib systems, a "dummy" library will be installed that can be safely
+linked against. This library file is a linker script that does has no effect and
+it exists such that you can safely add '-lhardened_malloc' to LDFLAGS without
+causing build errors on 32-bit packages.

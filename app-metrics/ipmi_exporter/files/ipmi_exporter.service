@@ -1,0 +1,12 @@
+[Unit]
+Description=Prometheus IPMI Exporter
+Documentation=https://github.com/prometheus-community/ipmi_exporter
+
+[Service]
+ExecStart=/usr/bin/ipmi_exporter --config.file=/etc/ipmi_exporter.yml
+User=ipmi-exporter
+Restart=always
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

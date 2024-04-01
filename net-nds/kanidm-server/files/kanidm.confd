@@ -1,0 +1,6 @@
+# User and group kanidm server should run as
+KANIDMD_USER=kanidmd
+KANIDMD_GROUP=nobody
+
+# Config file the kanidm server should use
+KANIDMD_CONF=/etc/kanidm/server.toml

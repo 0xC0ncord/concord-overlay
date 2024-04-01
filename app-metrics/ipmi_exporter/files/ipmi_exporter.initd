@@ -1,0 +1,14 @@
+#!/sbin/openrc-run
+
+description="Remote IPMI exporter for Prometheus"
+command=/usr/bin/ipmi_exporter
+command_args="--config.file=/etc/ipmi_exporter.yml"
+command_background=yes
+command_user=${RC_SVCNAME}:${RC_SVCNAME}
+pidfile=/var/run/ipmi_exporter.pid
+error_log="/var/log/${RC_SVCNAME}/${RC_SVCNAME}.log"
+output_log="/var/log/${RC_SVCNAME}/${RC_SVCNAME}.log"
+
+depend() {
+	after net
+}

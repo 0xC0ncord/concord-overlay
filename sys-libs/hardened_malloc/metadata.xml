@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<name>Kenton Groombridge</name>
+		<email>concord@gentoo.org</email>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">GrapheneOS/hardened_malloc</remote-id>
+		<bugs-to>https://github.com/GrapheneOS/hardened_malloc/issues</bugs-to>
+	</upstream>
+	<longdescription>
+		This is a security-focused general purpose memory allocator providing the
+		malloc API along with various extensions. It provides substantial hardening
+		against heap corruption vulnerabilities. The security-focused design also
+		leads to much less metadata overhead and memory waste from fragmentation
+		than a more traditional allocator design. It aims to provide decent overall
+		performance with a focus on long-term performance and memory usage rather
+		than allocator micro-benchmarks. It offers scalability via a configurable
+		number of entirely independently arenas, with the internal locking within
+		arenas further divided up per size class.
+	</longdescription>
+	<use>
+		<flag name="libcxx">Link against libc++ instead of libstdc++</flag>
+	</use>
+</pkgmetadata>
