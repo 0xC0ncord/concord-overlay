@@ -40,6 +40,9 @@ files_runtime_file(kanidm_unixd_runtime_t)
 type kanidm_var_lib_t;
 files_type(kanidm_var_lib_t)
 
+type kanidm_unixd_var_lib_t;
+files_type(kanidm_unixd_var_lib_t)
+
 ########################################
 #
 # kanidmd local policy
@@ -88,6 +91,7 @@ optional_policy(`
 
 allow kanidm_unixd_t self:process getsched;
 allow kanidm_unixd_t self:udp_socket create_socket_perms;
+allow kanidm_unixd_t self:unix_dgram_socket create_socket_perms;
 corenet_tcp_bind_generic_node(kanidm_unixd_t)
 
 corenet_tcp_connect_http_port(kanidm_unixd_t)
@@ -99,6 +103,9 @@ manage_files_pattern(kanidm_unixd_t, kanidm_unixd_cache_t, kanidm_unixd_cache_t)
 manage_dirs_pattern(kanidm_unixd_t, kanidm_unixd_runtime_t, kanidm_unixd_runtime_t)
 manage_sock_files_pattern(kanidm_unixd_t, kanidm_unixd_runtime_t, kanidm_unixd_runtime_t)
 files_runtime_filetrans(kanidm_unixd_t, kanidm_unixd_runtime_t, { dir sock_file })
+
+files_search_var_lib(kanidm_unixd_t)
+manage_files_pattern(kanidm_unixd_t, kanidm_unixd_var_lib_t, kanidm_unixd_var_lib_t)
 
 corecmd_exec_shell(kanidm_unixd_t)
 
@@ -115,6 +122,8 @@ auth_use_nsswitch(kanidm_unixd_t)
 
 miscfiles_read_generic_certs(kanidm_unixd_t)
 miscfiles_read_localization(kanidm_unixd_t)
+
+logging_send_syslog_msg(kanidm_unixd_t)
 
 userdom_use_user_terminals(kanidm_unixd_t)
 
