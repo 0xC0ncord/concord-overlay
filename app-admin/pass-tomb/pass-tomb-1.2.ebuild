@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -30,9 +30,9 @@ src_install() {
 		doins completion/${PN}.bash
 	fi
 	if use zsh-completion ; then
-		mv completion/${PN}.zsh completion/_${PN}.zsh
-		mv completion/pass-open.zsh completion/_pass-open.zsh
-		mv completion/pass-close.zsh completion/_pass-close.zsh
+		mv completion/${PN}.zsh completion/_${PN}.zsh || die
+		mv completion/pass-open.zsh completion/_pass-open.zsh || die
+		mv completion/pass-close.zsh completion/_pass-close.zsh || die
 
 		insinto /usr/share/zsh/site-functions
 		doins completion/_${PN}.zsh
