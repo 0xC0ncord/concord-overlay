@@ -34,10 +34,10 @@ src_compile() {
 src_install() {
 	dobin bin/virtctl
 
-	bin/virtctl completion bash >./virtctl.bash
+	bin/virtctl completion bash >./virtctl.bash || die
 	newbashcomp ./virtctl.bash virtctl
 
-	bin/virtctl completion zsh >./virtctl.zsh
+	bin/virtctl completion zsh >./virtctl.zsh || die
 	insinto /usr/share/zsh/site-functions
 	newins ./virtctl.zsh _virtctl
 }
