@@ -742,11 +742,24 @@ src_compile() {
 src_install() {
 	vectors_install() {
 		insinto "$(${PG_CONFIG} --pkglibdir)"
-		doins "$(cargo_target_dir)"/libvectors.so
+		newins "$(cargo_target_dir)"/libvectors.so vectors.so
+		fperms 0755 "$(${PG_CONFIG} --pkglibdir)"/vectors.so
 
 		insinto "$(${PG_CONFIG} --sharedir)"/extension
 		doins sql/install/vectors--* sql/upgrade/vectors--* vectors.control
 	}
 
 	postgres-multi_foreach vectors_install
+}
+
+pkg_postinst() {
+	if [[ -z "${REPLACING_VERSIONS}" ]]; then
+		echo
+		elog Install the vectors extension with the following PSQL commands:
+		elog
+		elog ALTER SYSTEM SET shared_preload_libraries = \"vectors.so\"
+		elog ALTER SYSTEM SET search_path TO \"\$user\", public, vectors
+		elog
+		elog Then restart your PostgreSQL cluster.
+	fi
 }
