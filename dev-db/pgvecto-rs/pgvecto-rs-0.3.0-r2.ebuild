@@ -679,14 +679,6 @@ inherit cargo flag-o-matic postgres-multi
 
 MY_PN="${PN/-/.}"
 
-export CBUILD=${CBUILD:-${CHOST}}
-export CTARGET=${CTARGET:-${CHOST}}
-if [[ ${CTARGET} == ${CHOST} ]] ; then
-	if [[ ${CATEGORY} == cross-* ]] ; then
-		export CTARGET=${CATEGORY#cross-}
-	fi
-fi
-
 DESCRIPTION="Scalable, Low-latency and Hybrid-enabled Vector Search in Postgres"
 HOMEPAGE="https://github.com/tensorchord/pgvecto.rs"
 SRC_URI="https://github.com/tensorchord/${MY_PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
@@ -702,7 +694,9 @@ DEPEND="
 	${POSTGRES_DEP}
 "
 RDEPEND="${DEPEND}"
-BDEPEND="sys-devel/clang:16"
+BDEPEND=">=dev-lang/rust-1.53[nightly]
+		sys-devel/clang:16
+		virtual/rust[rustfmt]"
 
 src_prepare() {
 	eapply_user
