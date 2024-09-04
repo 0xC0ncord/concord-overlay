@@ -696,11 +696,6 @@ LICENSE="0BSD Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD Boost-1.0 CC0-1.0 I
 SLOT="0"
 KEYWORDS="~amd64"
 
-CPU_USE=(
-	x86_vpclmulqdq
-)
-IUSE="${CPU_USE[@]/#/cpu_flags_}"
-
 S="${WORKDIR}/${MY_PN}-${PV}"
 
 DEPEND="
