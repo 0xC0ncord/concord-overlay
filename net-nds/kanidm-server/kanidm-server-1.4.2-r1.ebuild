@@ -677,7 +677,7 @@ src_install() {
 
 	# web interface files
 	insinto /usr/share/kanidm/ui/hpkg
-	doins -r server/core/static
+	doins -r server/core/static/*
 
 	newbashcomp "$(cargo_target_dir)"/build/completions/kanidmd.bash kanidmd
 
