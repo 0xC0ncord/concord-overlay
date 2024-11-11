@@ -649,6 +649,7 @@ src_compile() {
 	export KANIDM_BUILD_PROFILE=release_linux
 	cargo_src_compile --bin kanidmd
 	cargo_src_compile -p kanidm-ipa-sync
+	cargo_src_compile -p kanidm-ldap-sync
 }
 
 src_install() {
