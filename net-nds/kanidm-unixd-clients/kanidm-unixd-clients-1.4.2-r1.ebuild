@@ -631,6 +631,7 @@ RDEPEND="
 	dev-libs/openssl:=
 	sys-libs/pam
 	virtual/udev
+	tpm? ( app-crypt/tpm2-tss:0= )
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
@@ -649,6 +650,7 @@ src_compile() {
 
 	local features="unix"
 	use selinux && features+=",selinux"
+	use tpm && features+=",tpm"
 
 	export KANIDM_BUILD_PROFILE=release_linux
 	cargo_src_compile \
