@@ -654,6 +654,7 @@ src_compile() {
 src_install() {
 	dosbin "$(cargo_target_dir)"/kanidmd
 	dosbin "$(cargo_target_dir)"/kanidm-ipa-sync
+	dosbin "$(cargo_target_dir)"/kanidm-ldap-sync
 
 	insinto /etc/kanidm
 	doins examples/server.toml
@@ -671,10 +672,11 @@ src_install() {
 	systemd_dounit platform/opensuse/kanidmd.service
 	systemd_install_serviced "${FILESDIR}"/kanidmd.service.conf
 
+	systemd_dounit platform/opensuse/kanidm-ipa-sync.service
+
 	# web interface files
-	rm server/web_ui/pkg/ANYTHING_HERE_WILL_BE_DELETED_ADD_TO_SRC || die
-	insinto /usr/share/kanidm/ui
-	doins -r server/web_ui/pkg
+	insinto /usr/share/kanidm/ui/hpkg
+	doins -r server/core/static
 
 	newbashcomp "$(cargo_target_dir)"/build/completions/kanidmd.bash kanidmd
 
