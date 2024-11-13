@@ -623,7 +623,7 @@ LICENSE+="
 SLOT="0"
 KEYWORDS="~amd64"
 
-IUSE="doc selinux"
+IUSE="doc selinux tpm"
 PDEPEND="doc? ( ~app-doc/kanidm-docs-${PV} )"
 RDEPEND="
 	acct-user/kanidm-unixd
