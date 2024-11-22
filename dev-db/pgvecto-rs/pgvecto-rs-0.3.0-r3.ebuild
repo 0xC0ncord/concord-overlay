@@ -714,6 +714,7 @@ src_prepare() {
 	sed -e "s/@CARGO_VERSION@/${PV}/g" -i vectors.control || die Failed setting version in vectors.control
 
 	postgres-multi_src_prepare
+	rust_pkg_setup
 }
 
 src_compile() {
