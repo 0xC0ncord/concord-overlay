@@ -672,6 +672,9 @@ declare -A GIT_CRATES=(
 	[pgrx]="https://github.com/tensorchord/pgrx;${PGRX_COMMIT};pgrx-%commit%/pgrx"
 )
 
+RUST_MIN_VER=1.76.0
+RUST_REQ_USE=(nightly rustfmt)
+
 POSTGRES_COMPAT=( {14..16} )
 POSTGRES_USEDEP="server"
 
@@ -694,9 +697,7 @@ DEPEND="
 	${POSTGRES_DEP}
 "
 RDEPEND="${DEPEND}"
-BDEPEND=">=dev-lang/rust-1.53[nightly]
-		sys-devel/clang:16
-		virtual/rust[rustfmt]"
+BDEPEND="sys-devel/clang:16"
 
 src_prepare() {
 	eapply_user
