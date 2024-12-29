@@ -707,6 +707,8 @@ declare -A GIT_CRATES=(
 	[pgrx]='https://github.com/tensorchord/pgrx;1fd3d1544c2f9ac68ec0c6e293fd2de398b6d3d7;pgrx-%commit%/pgrx'
 )
 
+PGRX_COMMIT="1fd3d1544c2f9ac68ec0c6e293fd2de398b6d3d7"
+
 RUST_MIN_VER=1.76.0
 RUST_REQ_USE=(nightly rustfmt)
 
@@ -737,10 +739,8 @@ BDEPEND="llvm-core/clang:16"
 src_prepare() {
 	eapply_user
 
-	local PGRX_GIT="git = \"https://github.com/tensorchord/pgrx.git\", branch = \"v0.12.0-alpha.1-patch3\""
 	local PGRX_PATH="path = \"${WORKDIR}/pgrx-${PGRX_COMMIT}/pgrx\""
-
-	sed -e "s#${PGRX_GIT}#${PGRX_PATH}#" \
+	sed "/patch.crates.io/{n;s#^\(pgrx = \).*#\1\{${PGRX_PATH}\}#}" \
 		-i "${S}/Cargo.toml" || die "Cargo fetch workaround failed"
 
 	# Can't pass host flags
