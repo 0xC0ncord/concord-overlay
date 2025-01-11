@@ -697,7 +697,7 @@ DEPEND="
 	${POSTGRES_DEP}
 "
 RDEPEND="${DEPEND}"
-BDEPEND="sys-devel/clang:16"
+BDEPEND="llvm-core/clang:16"
 
 src_prepare() {
 	eapply_user
