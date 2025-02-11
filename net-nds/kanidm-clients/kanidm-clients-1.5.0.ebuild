@@ -654,8 +654,8 @@ S="${WORKDIR}/${MY_P}"
 
 src_compile() {
 	# Unpatch unstable crates
-	#sed -i "s|^\[patch.'https://github.com/kanidm/webauthn-rs'\]|[patch.crates-io]|" \
-	#	"${CARGO_HOME}"/config || die Failed patching cargo config
+	sed -i "s|^\[patch.'https://\S\+'\]|[patch.crates-io]|" \
+		"${CARGO_HOME}"/config.toml || die Failed patching cargo config
 
 	export KANIDM_BUILD_PROFILE=release_linux
 	# --bin to avoid building unneeded ssh keys client
