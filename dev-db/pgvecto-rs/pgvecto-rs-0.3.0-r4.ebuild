@@ -675,7 +675,7 @@ declare -A GIT_CRATES=(
 RUST_MIN_VER=1.76.0
 RUST_REQ_USE=(nightly rustfmt)
 
-POSTGRES_COMPAT=( {14..17} )
+POSTGRES_COMPAT=( {14..16} )
 POSTGRES_USEDEP="server"
 
 inherit cargo flag-o-matic postgres-multi
