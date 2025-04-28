@@ -712,7 +712,7 @@ PGRX_COMMIT="1fd3d1544c2f9ac68ec0c6e293fd2de398b6d3d7"
 RUST_MIN_VER=1.76.0
 RUST_REQ_USE=(nightly rustfmt)
 
-POSTGRES_COMPAT=( {14..16} )
+POSTGRES_COMPAT=( {14..17} )
 POSTGRES_USEDEP="server"
 
 inherit cargo flag-o-matic postgres-multi
