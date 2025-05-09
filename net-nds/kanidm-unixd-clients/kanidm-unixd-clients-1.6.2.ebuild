@@ -705,8 +705,22 @@ S="${WORKDIR}/${MY_P}"
 
 src_compile() {
 	# Unpatch unstable crates
-	sed -i "s|^\[patch.'https://\S\+'\]|[patch.crates-io]|" \
-		"${CARGO_HOME}"/config.toml || die Failed patching cargo config
+	{
+		awk -v RS= -v ORS="\n\n" '
+		{
+			if ($0 ~ /^\[patch\.crates-io\]/m) {
+				n = split($0, lines, "\n")
+				for (i = 1; i <= n; i++) {
+					if (lines[i] ~ /^\[patch\..*\]/) continue
+					if (lines[i] ~ /^\s*$/) continue
+					patches = patches lines[i] "\n"
+				}
+			} else { print $0 }
+		}
+		END { if (patches != "") print "[patch.crates-io]\n" patches }
+		' "${CARGO_HOME}"/config.toml >"${CARGO_HOME}"/config.toml.new && \
+			mv "${CARGO_HOME}"/config.toml.new "${CARGO_HOME}"/config.toml
+	} || die Failed patching cargo config
 
 	local features="unix"
 	use selinux && features+=",selinux"
