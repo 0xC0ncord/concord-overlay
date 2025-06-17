@@ -1,0 +1,11 @@
+diff '--color=auto' -urN a/tracing-forest/src/layer/mod.rs b/tracing-forest/src/layer/mod.rs
+--- a/tracing-forest/src/layer/mod.rs	2025-06-02 06:37:09.000000000 -0400
++++ b/tracing-forest/src/layer/mod.rs	2025-06-17 16:37:01.497066951 -0400
+@@ -33,6 +33,7 @@
+         let mut fields = FieldSet::default();
+         #[cfg(feature = "uuid")]
+         let mut maybe_uuid = None;
++        #[cfg(feature = "defer")]
+         let mut defer = false;
+ 
+         attrs.record(&mut |field: &Field, value: &dyn fmt::Debug| {
