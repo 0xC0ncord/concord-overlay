@@ -672,6 +672,8 @@ HOMEPAGE="https://kanidm.com https://github.com/kanidm/kanidm"
 SRC_URI="https://github.com/kanidm/kanidm/archive/v${MY_PV}.tar.gz -> kanidm-${PV}.tar.gz"
 SRC_URI+=" $(cargo_crate_uris)"
 
+S="${WORKDIR}/${MY_P}"
+
 LICENSE="MPL-2.0"
 # Dependent crate licenses
 LICENSE+="
@@ -699,7 +701,11 @@ BDEPEND="
 
 QA_FLAGS_IGNORED="usr/bin/.*"
 
-S="${WORKDIR}/${MY_P}"
+src_prepare() {
+	default
+	eapply --directory="${WORKDIR}"/tracing-forest-a04c79e049ee31fcc6965091181a5e427196db9b \
+		"${FILESDIR}/kanidm-1.6.4-tracing-forest-defer.patch"
+}
 
 src_compile() {
 	# Unpatch unstable crates
