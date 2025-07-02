@@ -1,30 +1,41 @@
 #!/sbin/openrc-run
-# Copyright 2023 Gentoo Authors
+# Copyright 2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 KANIDMD_CONF="${KANIDMD_CONF:-/etc/kanidm/server.toml}"
 
-name="kanidm server"
+name="kanidmd"
 description="Kanidm Identity Server"
 command=/usr/sbin/kanidmd
 command_args="${kanidmd_args} server -c ${KANIDMD_CONF}"
-command_background="true"
 command_user="${KANIDMD_USER}:${KANIDMD_GROUP}"
 output_log="/var/log/${RC_SVCNAME}.log"
-pidfile="/run/${RC_SVCNAME}.pid"
+runtime_dir=/run/kanidmd
+pidfile="${runtime_dir}/${RC_SVCNAME}.pid"
+supervisor=supervise-daemon
+
+extra_started_commands="reload"
+
+depend() {
+    after net
+}
 
 start_pre() {
-    checkpath --file --owner "${KANIDMD_USER}":root --mode 0600 \
+    checkpath --directory --owner "${KANIDMD_USER}":nobody --mode 0700 \
+        "${runtime_dir}"
+    checkpath --file --owner "${KANIDMD_USER}":nobody --mode 0600 \
         "${output_log}"
 }
 
-stop() {
-    ebegin "Stopping kanidmd"
-    start-stop-daemon --stop --quiet --signal INT \
-        --pidfile "${pidfile}"
-    eend $?
-}
-
-stop_post() {
-    rm -f "${pidfile}"
+reload() {
+    ebegin "Reloading configuration for ${RC_SVCNAME}"
+    case "$supervisor" in
+        supervise-daemon)
+            supervise-daemon ${RC_SVCNAME} --signal HUP
+            ;;
+        *)
+            start-stop-daemon --signal HUP --pidfile "${pidfile}"
+            ;;
+    esac
+    eend $? "Failed to reload ${RC_SVCNAME}"
 }
