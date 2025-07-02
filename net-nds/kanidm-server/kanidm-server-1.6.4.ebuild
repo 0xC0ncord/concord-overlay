@@ -694,6 +694,7 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 BDEPEND="
 	app-arch/zstd
+	llvm-core/lld
 	virtual/pkgconfig
 "
 
