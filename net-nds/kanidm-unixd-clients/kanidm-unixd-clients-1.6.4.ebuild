@@ -691,11 +691,13 @@ RDEPEND="
 	dev-libs/openssl:=
 	sys-libs/pam
 	virtual/udev
+	selinux? ( llvm-core/clang:* )
 	tpm? ( app-crypt/tpm2-tss:0= )
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
 	app-arch/zstd
+	llvm-core/lld
 	virtual/pkgconfig
 "
 
