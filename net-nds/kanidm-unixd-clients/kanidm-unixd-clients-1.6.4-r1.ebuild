@@ -758,9 +758,18 @@ src_install() {
 	insinto /etc/kanidm
 	doins examples/unixd
 
+	keepdir /var/lib/kanidm-unixd
+	fowners kanidmd:nobody /var/lib/kanidm-unixd
+	fperms 0700 /var/lib/kanidm-unixd
+
+	keepdir /var/cache/kanidm-unixd
+	fowners kanidmd:nobody /var/cache/kanidm-unixd
+	fperms 0700 /var/cache/kanidm-unixd
+
 	newconfd "${FILESDIR}/kanidm-unixd.confd" kanidm-unixd
 
 	newinitd "${FILESDIR}/kanidm-unixd.initd" kanidm-unixd
+	newinitd "${FILESDIR}/kanidm-unixd-tasks.initd" kanidm-unixd-tasks
 	systemd_dounit platform/opensuse/kanidm-unixd.service
 	systemd_dounit platform/opensuse/kanidm-unixd-tasks.service
 	systemd_install_serviced "${FILESDIR}"/kanidm-unixd.service.conf

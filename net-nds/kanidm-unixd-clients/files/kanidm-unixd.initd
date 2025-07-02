@@ -1,5 +1,5 @@
 #!/sbin/openrc-run
-# Copyright 2023 Gentoo Authors
+# Copyright 2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 KANIDM_UNIXD_CLIENT_CONF="${KANIDM_UNIXD_CLIENT_CONF:-/etc/kanidm/client}"
@@ -9,27 +9,19 @@ name="kanidm-unixd client"
 description="Kanidm Local Client Resolver"
 command=/usr/sbin/kanidm_unixd
 command_args="${kanidm_unixd_args} -c ${KANIDM_UNIXD_CLIENT_CONF} -u ${KANIDM_UNIXD_UNIX_CONF}"
-command_background="true"
 command_user="${KANIDM_UNIXD_USER}:${KANIDM_UNIXD_GROUP}"
 output_log="/var/log/${RC_SVCNAME}.log"
-pidfile="/run/${RC_SVCNAME}.pid"
+runtime_dir="/run/kanidm-unixd"
+pidfile="${runtime_dir}/${RC_SVCNAME}.pid"
+supervisor=supervise-daemon
+
+depend() {
+    after net
+}
 
 start_pre() {
-    checkpath --file --owner "${KANIDM_UNIXD_USER}":root --mode 0600 \
+    checkpath --file --owner "${KANIDM_UNIXD_USER}":nobody --mode 0600 \
         "${output_log}"
-    checkpath --directory --owner "${KANIDM_UNIXD_USER}":root --mode 0700 \
-        /var/cache/kanidm-unixd
-    checkpath --directory --owner "${KANIDM_UNIXD_USER}":root --mode 0755 \
-        /run/kanidm-unixd
-}
-
-stop() {
-    ebegin "Stopping kanidm-unixd"
-    start-stop-daemon --stop --quiet --signal INT \
-        --pidfile "${pidfile}"
-    eend $?
-}
-
-stop_post() {
-    rm -f "${pidfile}"
+    checkpath --directory --owner "${KANIDM_UNIXD_USER}":nobody --mode 0755 \
+        "${runtime_dir}"
 }
