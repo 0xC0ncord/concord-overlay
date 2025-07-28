@@ -759,11 +759,11 @@ src_install() {
 	doins examples/unixd
 
 	keepdir /var/lib/kanidm-unixd
-	fowners kanidmd:nobody /var/lib/kanidm-unixd
+	fowners kanidm-unixd:nobody /var/lib/kanidm-unixd
 	fperms 0700 /var/lib/kanidm-unixd
 
 	keepdir /var/cache/kanidm-unixd
-	fowners kanidmd:nobody /var/cache/kanidm-unixd
+	fowners kanidm-unixd:nobody /var/cache/kanidm-unixd
 	fperms 0700 /var/cache/kanidm-unixd
 
 	newconfd "${FILESDIR}/kanidm-unixd.confd" kanidm-unixd
