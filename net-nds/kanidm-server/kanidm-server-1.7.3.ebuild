@@ -1,0 +1,839 @@
+# Copyright 2023-2024 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=8
+
+CRATES="
+	addr2line@0.24.2
+	adler2@2.0.1
+	aead@0.5.2
+	aes-gcm@0.10.3
+	aes-kw@0.2.1
+	aes@0.8.4
+	ahash@0.8.12
+	aho-corasick@1.1.3
+	allocator-api2@0.2.21
+	android-tzdata@0.1.1
+	android_system_properties@0.1.5
+	anstream@0.6.20
+	anstyle-parse@0.2.7
+	anstyle-query@1.1.4
+	anstyle-wincon@3.0.10
+	anstyle@1.0.11
+	anyhow@1.0.98
+	arc-swap@1.7.1
+	argon2@0.5.3
+	askama@0.12.1
+	askama_axum@0.4.0
+	askama_derive@0.12.5
+	askama_escape@0.10.3
+	askama_parser@0.2.1
+	asn1-rs-derive@0.5.1
+	asn1-rs-impl@0.2.0
+	asn1-rs@0.6.2
+	async-compression@0.4.27
+	async-stream-impl@0.3.6
+	async-stream@0.3.6
+	async-trait@0.1.88
+	atomic-waker@1.1.2
+	authenticator@0.4.1
+	autocfg@1.5.0
+	aws-lc-rs@1.13.3
+	aws-lc-sys@0.30.0
+	axum-core@0.4.5
+	axum-extra@0.9.6
+	axum-htmx@0.5.0
+	axum-macros@0.4.2
+	axum@0.7.9
+	backtrace@0.3.75
+	base16ct@0.2.0
+	base32@0.5.1
+	base64@0.13.1
+	base64@0.21.7
+	base64@0.22.1
+	base64ct@1.8.0
+	base64urlsafedata@0.5.2
+	basic-toml@0.1.10
+	bindgen@0.66.1
+	bindgen@0.69.5
+	bindgen@0.72.0
+	bit-set@0.5.3
+	bit-set@0.8.0
+	bit-vec@0.6.3
+	bit-vec@0.8.0
+	bitfield@0.13.2
+	bitflags@1.3.2
+	bitflags@2.9.1
+	blake2@0.10.6
+	block-buffer@0.10.4
+	block-buffer@0.11.0-rc.4
+	block-padding@0.3.3
+	borrow-or-share@0.2.2
+	bstr@1.12.0
+	bumpalo@3.19.0
+	bytecount@0.6.9
+	bytemuck@1.23.1
+	byteorder-lite@0.1.0
+	byteorder@1.5.0
+	bytes@1.10.1
+	cbc@0.1.2
+	cc@1.2.31
+	cexpr@0.6.0
+	cfg-if@1.0.1
+	cfg_aliases@0.2.1
+	chrono@0.4.41
+	cidr@0.3.1
+	cipher@0.4.4
+	clang-sys@1.8.1
+	clap@4.5.42
+	clap_builder@4.5.42
+	clap_complete@4.5.55
+	clap_derive@4.5.41
+	clap_lex@0.7.5
+	clru@0.6.2
+	cmake@0.1.54
+	color_quant@1.1.0
+	colorchoice@1.0.4
+	compact_jwt@0.5.3-dev
+	concread@0.5.7
+	console@0.15.11
+	const-oid@0.9.6
+	cookie@0.16.2
+	cookie@0.18.1
+	cookie_store@0.21.1
+	core-foundation-sys@0.8.7
+	core-foundation@0.10.1
+	core-foundation@0.9.4
+	core_maths@0.1.1
+	cpufeatures@0.2.17
+	crc32fast@1.5.0
+	cron@0.15.0
+	crossbeam-channel@0.5.15
+	crossbeam-deque@0.8.6
+	crossbeam-epoch@0.9.18
+	crossbeam-queue@0.3.12
+	crossbeam-utils@0.8.21
+	crossbeam@0.8.4
+	crypto-bigint@0.5.5
+	crypto-common@0.1.6
+	crypto-common@0.2.0-rc.3
+	crypto-glue@0.1.9
+	csv-core@0.1.12
+	csv@1.3.1
+	ctr@0.9.2
+	darling@0.20.11
+	darling_core@0.20.11
+	darling_macro@0.20.11
+	data-encoding@2.9.0
+	der-parser@9.0.0
+	der@0.7.10
+	der_derive@0.7.3
+	deranged@0.4.0
+	derive_builder@0.20.2
+	derive_builder_core@0.20.2
+	derive_builder_macro@0.20.2
+	devd-rs@0.3.6
+	dhat@0.3.3
+	dialoguer@0.11.0
+	digest@0.10.7
+	digest@0.11.0-rc.0
+	dirs-sys@0.5.0
+	dirs@6.0.0
+	displaydoc@0.2.5
+	document-features@0.2.11
+	dunce@1.0.5
+	dyn-clone@1.0.20
+	ecdsa@0.16.9
+	either@1.15.0
+	elliptic-curve@0.13.8
+	email_address@0.2.9
+	encode_unicode@1.0.0
+	encoding_rs@0.8.35
+	enum-iterator-derive@1.4.0
+	enum-iterator@2.1.0
+	enumflags2@0.7.12
+	enumflags2_derive@0.7.12
+	equivalent@1.0.2
+	errno@0.3.13
+	escargot@0.5.14
+	fallible-iterator@0.3.0
+	fallible-streaming-iterator@0.1.9
+	fancy-regex@0.13.0
+	fancy-regex@0.14.0
+	fantoccini@0.22.0
+	faster-hex@0.10.0
+	faster-hex@0.9.0
+	fastrand@2.3.0
+	ff@0.13.1
+	file-id@0.2.3
+	filetime@0.2.25
+	fixedbitset@0.5.7
+	flagset@0.4.7
+	flate2@1.1.2
+	fluent-uri@0.3.2
+	fnv@1.0.7
+	foldhash@0.1.5
+	foreign-types-shared@0.1.1
+	foreign-types@0.3.2
+	form_urlencoded@1.2.1
+	fraction@0.15.3
+	fs4@0.13.1
+	fs_extra@1.3.0
+	fsevent-sys@4.1.0
+	futures-channel@0.3.31
+	futures-core@0.3.31
+	futures-executor@0.3.31
+	futures-io@0.3.31
+	futures-macro@0.3.31
+	futures-sink@0.3.31
+	futures-task@0.3.31
+	futures-util@0.3.31
+	futures@0.3.31
+	generic-array@0.14.7
+	getrandom@0.2.16
+	getrandom@0.3.3
+	ghash@0.5.1
+	gif@0.13.3
+	gimli@0.31.1
+	gix-actor@0.34.0
+	gix-chunk@0.4.11
+	gix-command@0.5.0
+	gix-commitgraph@0.27.0
+	gix-config-value@0.14.12
+	gix-config@0.44.0
+	gix-date@0.9.4
+	gix-diff@0.51.0
+	gix-discover@0.39.0
+	gix-features@0.41.1
+	gix-features@0.42.1
+	gix-fs@0.14.0
+	gix-fs@0.15.0
+	gix-glob@0.19.0
+	gix-hash@0.17.0
+	gix-hash@0.18.0
+	gix-hashtable@0.8.1
+	gix-lock@17.1.0
+	gix-object@0.48.0
+	gix-odb@0.68.0
+	gix-pack@0.58.0
+	gix-packetline@0.18.4
+	gix-path@0.10.20
+	gix-protocol@0.49.0
+	gix-quote@0.5.0
+	gix-ref@0.51.0
+	gix-refspec@0.29.0
+	gix-revision@0.33.0
+	gix-revwalk@0.19.0
+	gix-sec@0.10.12
+	gix-shallow@0.3.0
+	gix-tempfile@17.1.0
+	gix-trace@0.1.13
+	gix-transport@0.46.0
+	gix-traverse@0.45.0
+	gix-url@0.30.0
+	gix-utils@0.2.0
+	gix-utils@0.3.0
+	gix-validate@0.10.0
+	gix-validate@0.9.4
+	gix@0.71.0
+	glob@0.3.2
+	group@0.13.0
+	h2@0.3.27
+	h2@0.4.11
+	half@1.8.3
+	haproxy-protocol@0.0.1
+	hash32@0.3.1
+	hashbrown@0.12.3
+	hashbrown@0.14.5
+	hashbrown@0.15.4
+	hashlink@0.10.0
+	heapless@0.8.0
+	heck@0.5.0
+	hermit-abi@0.5.2
+	hex@0.4.3
+	hkdf@0.12.4
+	hmac@0.12.1
+	hmac@0.13.0-rc.0
+	home@0.5.11
+	hostname-validator@1.1.1
+	http-body-util@0.1.3
+	http-body@0.4.6
+	http-body@1.0.1
+	http-range-header@0.4.2
+	http@0.2.12
+	http@1.3.1
+	httparse@1.10.1
+	httpdate@1.0.3
+	humansize@2.1.3
+	hybrid-array@0.3.1
+	hyper-rustls@0.27.7
+	hyper-timeout@0.5.2
+	hyper-tls@0.6.0
+	hyper-util@0.1.16
+	hyper@0.14.32
+	hyper@1.6.0
+	iana-time-zone-haiku@0.1.2
+	iana-time-zone@0.1.63
+	icu_collections@1.5.0
+	icu_collections@2.0.0
+	icu_locale_core@2.0.0
+	icu_locid@1.5.0
+	icu_normalizer@2.0.0
+	icu_normalizer_data@2.0.0
+	icu_properties@2.0.1
+	icu_properties_data@2.0.1
+	icu_provider@1.5.0
+	icu_provider@2.0.0
+	icu_provider_macros@1.5.0
+	icu_segmenter@1.5.0
+	icu_segmenter_data@1.5.1
+	ident_case@1.0.1
+	idlset@0.2.5
+	idna@1.0.3
+	idna_adapter@1.2.1
+	image-webp@0.2.3
+	image@0.25.6
+	indexmap@1.9.3
+	indexmap@2.10.0
+	inotify-sys@0.1.5
+	inotify@0.10.2
+	inout@0.1.4
+	instant@0.1.13
+	io-uring@0.7.9
+	ipnet@2.11.0
+	iri-string@0.7.8
+	is_terminal_polyfill@1.70.1
+	itertools@0.12.1
+	itertools@0.13.0
+	itertools@0.14.0
+	itoa@1.0.15
+	jiff-static@0.2.15
+	jiff-tzdb-platform@0.1.3
+	jiff-tzdb@0.1.4
+	jiff@0.2.15
+	jobserver@0.1.33
+	js-sys@0.3.77
+	jsonschema@0.30.0
+	kanidm-hsm-crypto@0.3.4
+	kbkdf@0.0.1
+	kqueue-sys@1.0.4
+	kqueue@1.1.1
+	lambert_w@1.2.24
+	lazy_static@1.5.0
+	lazycell@1.3.0
+	lber@0.4.2
+	ldap3_client@0.5.2
+	ldap3_proto@0.5.2
+	libc@0.2.174
+	libloading@0.8.8
+	libm@0.2.15
+	libmimalloc-sys@0.1.43
+	libnss@0.9.0
+	libredox@0.1.9
+	libsqlite3-sys@0.33.0
+	libudev-sys@0.1.4
+	libudev@0.2.0
+	libz-rs-sys@0.5.1
+	linux-raw-sys@0.4.15
+	linux-raw-sys@0.9.4
+	litemap@0.7.5
+	litemap@0.8.0
+	litrs@0.4.2
+	lock_api@0.4.13
+	lodepng@3.12.1
+	log@0.4.27
+	lru-slab@0.1.2
+	lru@0.13.0
+	lru@0.14.0
+	malloced@1.3.1
+	matchers@0.1.0
+	matchit@0.7.3
+	mathru@0.15.5
+	matrixmultiply@0.3.10
+	maybe-async@0.2.10
+	md-5@0.10.6
+	md4@0.10.2
+	memchr@2.7.5
+	memmap2@0.9.7
+	memoffset@0.8.0
+	mimalloc@0.1.47
+	mime@0.3.17
+	mime_guess@2.0.5
+	minimal-lexical@0.2.1
+	miniz_oxide@0.8.9
+	mintex@0.1.4
+	mio@1.0.4
+	multer@3.1.0
+	native-tls@0.2.14
+	nix@0.30.1
+	nom@7.1.3
+	nom@8.0.0
+	nonempty@0.11.0
+	notify-debouncer-full@0.4.0
+	notify-types@1.0.1
+	notify@7.0.0
+	nu-ansi-term@0.46.0
+	num-bigint-dig@0.8.4
+	num-bigint@0.4.6
+	num-cmp@0.1.0
+	num-complex@0.4.6
+	num-conv@0.1.0
+	num-derive@0.3.3
+	num-derive@0.4.2
+	num-integer@0.1.46
+	num-iter@0.1.45
+	num-rational@0.4.2
+	num-traits@0.2.19
+	num@0.4.3
+	num_cpus@1.17.0
+	num_enum@0.7.4
+	num_enum_derive@0.7.4
+	num_threads@0.1.7
+	oauth2@4.4.2
+	oauth2@5.0.0
+	object@0.36.7
+	oid-registry@0.7.1
+	oid@0.2.1
+	once_cell@1.21.3
+	once_cell_polyfill@1.70.1
+	opaque-debug@0.3.1
+	openssl-macros@0.1.1
+	openssl-probe@0.1.6
+	openssl-sys@0.9.109
+	openssl@0.10.73
+	opentelemetry-http@0.27.0
+	opentelemetry-otlp@0.27.0
+	opentelemetry-proto@0.27.0
+	opentelemetry-semantic-conventions@0.27.0
+	opentelemetry@0.27.1
+	opentelemetry_sdk@0.27.1
+	option-ext@0.2.0
+	outref@0.5.2
+	overload@0.1.1
+	p256@0.13.2
+	p384@0.13.1
+	parking_lot@0.12.4
+	parking_lot_core@0.9.11
+	password-hash@0.5.0
+	paste@1.0.15
+	pastey@0.1.0
+	peeking_take_while@0.1.2
+	peg-macros@0.8.5
+	peg-runtime@0.8.5
+	peg@0.8.5
+	pem-rfc7468@0.7.0
+	percent-encoding@2.3.1
+	petgraph@0.8.2
+	picky-asn1-der@0.4.1
+	picky-asn1-x509@0.12.0
+	picky-asn1@0.8.0
+	pin-project-internal@1.1.10
+	pin-project-lite@0.2.16
+	pin-project@1.1.10
+	pin-utils@0.1.0
+	pkcs1@0.7.5
+	pkcs8@0.10.2
+	pkg-config@0.3.32
+	polyval@0.6.2
+	portable-atomic-util@0.2.4
+	portable-atomic@1.11.1
+	potential_utf@0.1.2
+	powerfmt@0.2.0
+	ppv-lite86@0.2.21
+	prctl@1.0.0
+	prettyplease@0.2.36
+	primeorder@0.13.6
+	proc-macro-crate@3.3.0
+	proc-macro-error-attr@1.0.4
+	proc-macro-error@1.0.4
+	proc-macro2@1.0.95
+	prodash@29.0.2
+	prost-derive@0.13.5
+	prost@0.13.5
+	psl-types@2.0.11
+	publicsuffix@2.3.0
+	qrcode@0.14.1
+	quick-error@2.0.1
+	quinn-proto@0.11.12
+	quinn-udp@0.5.13
+	quinn@0.11.8
+	quote@1.0.40
+	r-efi@5.3.0
+	rand@0.8.5
+	rand@0.9.2
+	rand_chacha@0.3.1
+	rand_chacha@0.9.0
+	rand_core@0.6.4
+	rand_core@0.9.3
+	rawpointer@0.2.1
+	redox_syscall@0.5.17
+	redox_users@0.5.2
+	ref-cast-impl@1.0.24
+	ref-cast@1.0.24
+	referencing@0.30.0
+	regex-automata@0.1.10
+	regex-automata@0.4.9
+	regex-syntax@0.6.29
+	regex-syntax@0.8.5
+	regex@1.11.1
+	reqwest@0.11.27
+	reqwest@0.12.22
+	rfc6979@0.4.0
+	rgb@0.8.52
+	ring@0.17.14
+	rpassword@5.0.1
+	rsa@0.9.8
+	runloop@0.1.0
+	rusqlite@0.35.0
+	rust-embed-impl@8.7.2
+	rust-embed-utils@8.7.2
+	rust-embed@8.7.2
+	rustc-demangle@0.1.26
+	rustc-hash@1.1.0
+	rustc-hash@2.1.1
+	rusticata-macros@4.1.0
+	rustix@0.38.44
+	rustix@1.0.8
+	rustls-native-certs@0.8.1
+	rustls-pki-types@1.12.0
+	rustls-webpki@0.103.4
+	rustls@0.23.31
+	rustversion@1.0.21
+	ryu@1.0.20
+	same-file@1.0.6
+	schannel@0.1.27
+	schemars@0.9.0
+	schemars@1.0.4
+	scopeguard@1.2.0
+	sd-notify@0.4.5
+	sec1@0.7.3
+	security-framework-sys@2.14.0
+	security-framework@2.11.1
+	security-framework@3.2.0
+	selinux-sys@0.6.15
+	selinux@0.5.3
+	semver@1.0.26
+	serde@1.0.219
+	serde_bytes@0.11.17
+	serde_cbor@0.11.2
+	serde_cbor_2@0.12.0-dev
+	serde_derive@1.0.219
+	serde_html_form@0.2.7
+	serde_json@1.0.142
+	serde_path_to_error@0.1.17
+	serde_spanned@0.6.9
+	serde_urlencoded@0.7.1
+	serde_with@3.14.0
+	serde_with_macros@3.14.0
+	sha-crypt@0.5.0
+	sha1-checked@0.10.0
+	sha1@0.10.6
+	sha2@0.10.9
+	sha2@0.11.0-rc.0
+	sharded-slab@0.1.7
+	shell-words@1.1.0
+	shellexpand@3.1.1
+	shlex@1.3.0
+	signal-hook-registry@1.4.6
+	signature@2.2.0
+	slab@0.4.10
+	smallvec@1.15.1
+	smartstring@1.0.1
+	smolset@1.3.1
+	socket2@0.5.10
+	socket2@0.6.0
+	spin@0.9.8
+	spki@0.7.3
+	sptr@0.3.2
+	sshkey-attest@0.5.2
+	stable_deref_trait@1.2.0
+	static_assertions@1.1.0
+	strsim@0.11.1
+	subtle@2.6.1
+	svg@0.18.0
+	syn@1.0.109
+	syn@2.0.104
+	sync_wrapper@0.1.2
+	sync_wrapper@1.0.2
+	synstructure@0.13.2
+	system-configuration-sys@0.5.0
+	system-configuration@0.5.1
+	target-lexicon@0.12.16
+	tempfile@3.20.0
+	thiserror-impl@1.0.69
+	thiserror-impl@2.0.12
+	thiserror@1.0.69
+	thiserror@2.0.12
+	thousands@0.2.0
+	thread-tree@0.3.3
+	thread_local@1.1.9
+	time-core@0.1.4
+	time-macros@0.2.22
+	time@0.3.41
+	tinystr@0.7.6
+	tinystr@0.8.1
+	tinyvec@1.9.0
+	tinyvec_macros@0.1.1
+	tls_codec@0.4.2
+	tls_codec_derive@0.4.2
+	tokio-macros@2.5.0
+	tokio-native-tls@0.3.1
+	tokio-openssl@0.6.5
+	tokio-rustls@0.26.2
+	tokio-stream@0.1.17
+	tokio-util@0.7.16
+	tokio@1.47.1
+	toml@0.8.23
+	toml_datetime@0.6.11
+	toml_edit@0.22.27
+	toml_write@0.1.2
+	tonic@0.12.3
+	tower-http@0.6.6
+	tower-layer@0.3.3
+	tower-service@0.3.3
+	tower@0.4.13
+	tower@0.5.2
+	tracing-attributes@0.1.30
+	tracing-core@0.1.34
+	tracing-forest@0.2.0
+	tracing-log@0.2.0
+	tracing-opentelemetry@0.28.0
+	tracing-subscriber@0.3.19
+	tracing@0.1.41
+	try-lock@0.2.5
+	tss-esapi-sys@0.5.0
+	tss-esapi@8.0.0-alpha
+	typenum@1.18.0
+	unicase@2.8.1
+	unicode-bom@2.0.3
+	unicode-ident@1.0.18
+	unicode-normalization@0.1.24
+	unicode-width@0.2.1
+	universal-hash@0.5.1
+	untrusted@0.9.0
+	url@2.5.4
+	urlencoding@2.1.3
+	utf8_iter@1.0.4
+	utf8parse@0.2.2
+	utoipa-gen@4.3.1
+	utoipa-swagger-ui@6.0.0
+	utoipa@4.2.3
+	uuid-simd@0.8.0
+	uuid@1.17.0
+	valuable@0.1.1
+	vcpkg@0.2.15
+	version_check@0.9.5
+	vsimd@0.8.0
+	walkdir@2.5.0
+	want@0.3.1
+	wasi@0.11.1+wasi-snapshot-preview1
+	wasi@0.14.2+wasi-0.2.4
+	wasite@0.1.0
+	wasm-bindgen-backend@0.2.100
+	wasm-bindgen-futures@0.4.50
+	wasm-bindgen-macro-support@0.2.100
+	wasm-bindgen-macro@0.2.100
+	wasm-bindgen-shared@0.2.100
+	wasm-bindgen@0.2.100
+	web-sys@0.3.77
+	web-time@1.1.0
+	webauthn-attestation-ca@0.5.2
+	webauthn-authenticator-rs@0.5.2
+	webauthn-rs-core@0.5.2
+	webauthn-rs-proto@0.5.2
+	webauthn-rs@0.5.2
+	webdriver@0.53.0
+	webpki-roots@1.0.2
+	weezl@0.1.10
+	which@4.4.2
+	whoami@1.6.0
+	winapi-i686-pc-windows-gnu@0.4.0
+	winapi-util@0.1.9
+	winapi-x86_64-pc-windows-gnu@0.4.0
+	winapi@0.3.9
+	windows-core@0.61.2
+	windows-implement@0.60.0
+	windows-interface@0.59.1
+	windows-link@0.1.3
+	windows-result@0.3.4
+	windows-strings@0.4.2
+	windows-sys@0.48.0
+	windows-sys@0.52.0
+	windows-sys@0.59.0
+	windows-sys@0.60.2
+	windows-targets@0.48.5
+	windows-targets@0.52.6
+	windows-targets@0.53.3
+	windows@0.41.0
+	windows_aarch64_gnullvm@0.41.0
+	windows_aarch64_gnullvm@0.48.5
+	windows_aarch64_gnullvm@0.52.6
+	windows_aarch64_gnullvm@0.53.0
+	windows_aarch64_msvc@0.41.0
+	windows_aarch64_msvc@0.48.5
+	windows_aarch64_msvc@0.52.6
+	windows_aarch64_msvc@0.53.0
+	windows_i686_gnu@0.41.0
+	windows_i686_gnu@0.48.5
+	windows_i686_gnu@0.52.6
+	windows_i686_gnu@0.53.0
+	windows_i686_gnullvm@0.52.6
+	windows_i686_gnullvm@0.53.0
+	windows_i686_msvc@0.41.0
+	windows_i686_msvc@0.48.5
+	windows_i686_msvc@0.52.6
+	windows_i686_msvc@0.53.0
+	windows_x86_64_gnu@0.41.0
+	windows_x86_64_gnu@0.48.5
+	windows_x86_64_gnu@0.52.6
+	windows_x86_64_gnu@0.53.0
+	windows_x86_64_gnullvm@0.41.0
+	windows_x86_64_gnullvm@0.48.5
+	windows_x86_64_gnullvm@0.52.6
+	windows_x86_64_gnullvm@0.53.0
+	windows_x86_64_msvc@0.41.0
+	windows_x86_64_msvc@0.48.5
+	windows_x86_64_msvc@0.52.6
+	windows_x86_64_msvc@0.53.0
+	winnow@0.6.26
+	winnow@0.7.12
+	winreg@0.50.0
+	wit-bindgen-rt@0.39.0
+	writeable@0.5.5
+	writeable@0.6.1
+	x509-cert@0.2.5
+	x509-parser@0.16.0
+	yoke-derive@0.7.5
+	yoke-derive@0.8.0
+	yoke@0.7.5
+	yoke@0.8.0
+	zerocopy-derive@0.8.26
+	zerocopy@0.8.26
+	zerofrom-derive@0.1.6
+	zerofrom@0.1.6
+	zeroize@1.8.1
+	zeroize_derive@1.4.2
+	zerotrie@0.2.2
+	zerovec-derive@0.10.3
+	zerovec-derive@0.11.1
+	zerovec@0.10.4
+	zerovec@0.11.3
+	zip@0.6.6
+	zlib-rs@0.5.1
+	zune-core@0.4.12
+	zune-jpeg@0.4.20
+	zxcvbn@3.1.0
+"
+
+declare -A GIT_CRATES=(
+	[sshkeys]='https://github.com/dnaeon/rust-sshkeys;d736693769b9c4abebad8050fba92271f3c50226;rust-sshkeys-%commit%'
+)
+
+inherit bash-completion-r1 cargo optfeature systemd
+
+MY_PV="${PV/rc/rc.}"
+MY_PV="${MY_PV/_/-}"
+MY_P="kanidm-${MY_PV}"
+
+DESCRIPTION="Kanidm Server Daemon"
+HOMEPAGE="https://kanidm.com https://github.com/kanidm/kanidm"
+SRC_URI="https://github.com/kanidm/kanidm/archive/v${MY_PV}.tar.gz -> kanidm-${PV}.tar.gz"
+SRC_URI+=" $(cargo_crate_uris)"
+
+S="${WORKDIR}/${MY_P}"
+
+LICENSE="MPL-2.0"
+# Dependent crate licenses
+LICENSE+="
+	0BSD Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD CC0-1.0
+	CDLA-Permissive-2.0 ISC LGPL-3 MIT MIT-0 MPL-2.0 MPL-2.0 openssl
+	Unicode-3.0 ZLIB
+"
+SLOT="0"
+KEYWORDS="~amd64"
+
+IUSE="doc"
+PDEPEND="doc? ( ~app-doc/kanidm-docs-${PV} )"
+RDEPEND="
+	acct-user/kanidmd
+	dev-db/sqlite:3
+	dev-libs/openssl:=
+	sys-libs/zlib
+"
+DEPEND="${RDEPEND}"
+BDEPEND="
+	app-arch/zstd
+	llvm-core/lld
+	virtual/pkgconfig
+"
+
+QA_FLAGS_IGNORED="usr/bin/.*"
+
+src_prepare() {
+	default
+	eapply --directory="${WORKDIR}"/rust-sshkeys-d736693769b9c4abebad8050fba92271f3c50226 \
+		"${FILESDIR}/kanidm-1.6.4-rust-sshkeys-elided-lifetime.patch"
+}
+
+src_compile() {
+	# Unpatch unstable crates
+	{
+		awk -v RS= -v ORS="\n\n" '
+		{
+			if ($0 ~ /^\[patch\.crates-io\]/m) {
+				n = split($0, lines, "\n")
+				for (i = 1; i <= n; i++) {
+					if (lines[i] ~ /^\[patch\..*\]/) continue
+					if (lines[i] ~ /^\s*$/) continue
+					patches = patches lines[i] "\n"
+				}
+			} else { print $0 }
+		}
+		END { if (patches != "") print "[patch.crates-io]\n" patches }
+		' "${CARGO_HOME}"/config.toml >"${CARGO_HOME}"/config.toml.new && \
+			mv "${CARGO_HOME}"/config.toml.new "${CARGO_HOME}"/config.toml
+	} || die Failed patching cargo config
+
+	export KANIDM_BUILD_PROFILE=release_linux
+	cargo_src_compile --bin kanidmd
+	cargo_src_compile -p kanidm-ipa-sync
+	cargo_src_compile -p kanidm-ldap-sync
+}
+
+src_install() {
+	dosbin "$(cargo_target_dir)"/kanidmd
+	dosbin "$(cargo_target_dir)"/kanidm-ipa-sync
+	dosbin "$(cargo_target_dir)"/kanidm-ldap-sync
+
+	insinto /etc/kanidm
+	doins examples/server.toml
+
+	fowners kanidmd:root /etc/kanidm/server.toml
+	fperms 0400 /etc/kanidm/server.toml
+
+	keepdir /var/lib/kanidm
+	fowners kanidmd:root /var/lib/kanidm
+	fperms 0700 /var/lib/kanidm
+
+	newconfd "${FILESDIR}/kanidmd.confd" kanidmd
+
+	newinitd "${FILESDIR}/kanidmd.initd" kanidmd
+	systemd_dounit platform/opensuse/kanidmd.service
+	systemd_install_serviced "${FILESDIR}"/kanidmd.service.conf
+
+	systemd_dounit platform/opensuse/kanidm-ipa-sync.service
+
+	# web interface files
+	insinto /usr/share/kanidm/ui/hpkg
+	doins -r server/core/static/*
+
+	newbashcomp "$(cargo_target_dir)"/build/completions/kanidmd.bash kanidmd
+
+	insinto /usr/share/zsh/site-functions
+	doins "$(cargo_target_dir)"/build/completions/_kanidmd
+}
+
+pkg_postinst() {
+	optfeature "clients to administrate the Kanidm Server" net-nds/kanidm-clients
+	optfeature "Unix integration clients with the Kanidm Server" net-nds/kanidm-unixd-clients
+}
