@@ -705,6 +705,8 @@ QA_FLAGS_IGNORED="usr/bin/.*"
 
 src_prepare() {
 	default
+	eapply --directory="${WORKDIR}"/rust-sshkeys-d736693769b9c4abebad8050fba92271f3c50226 \
+		"${FILESDIR}/kanidm-1.6.4-rust-sshkeys-elided-lifetime.patch"
 	eapply --directory="${WORKDIR}"/tracing-forest-a04c79e049ee31fcc6965091181a5e427196db9b \
 		"${FILESDIR}/kanidm-1.6.4-tracing-forest-defer.patch"
 }
