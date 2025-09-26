@@ -24,7 +24,6 @@ distutils_enable_tests pytest
 RDEPEND="
 	dev-python/durationpy[${PYTHON_USEDEP}]
 	dev-python/google-auth[${PYTHON_USEDEP}]
-	dev-python/setuptools[${PYTHON_USEDEP}]
 	dev-python/websocket-client[${PYTHON_USEDEP}]
 "
 
