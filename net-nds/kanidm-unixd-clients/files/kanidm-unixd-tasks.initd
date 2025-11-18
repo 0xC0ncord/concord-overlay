@@ -7,6 +7,7 @@ description="Kanidm Local Tasks"
 command=/usr/sbin/kanidm_unixd_tasks
 command_user="root"
 output_log="/var/log/${RC_SVCNAME}.log"
+cache_dir=/var/cache/kanidm-unixd
 runtime_dir=/run/kanidm-unixd
 pidfile="${runtime_dir}/${RC_SVCNAME}.pid"
 supervisor=supervise-daemon
@@ -16,6 +17,8 @@ depend() {
 }
 
 start_pre() {
+    checkpath --directory --owner "kanidm-unixd":nobody --mode 0700 \
+        "${cache_dir}"
     checkpath --file --owner "${command_user}" --mode 0600 \
         "${output_log}"
 }
