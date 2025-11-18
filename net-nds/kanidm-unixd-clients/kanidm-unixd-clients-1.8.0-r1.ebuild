@@ -15,7 +15,7 @@ DESCRIPTION="Kanidm Unix Integration Clients"
 HOMEPAGE="https://kanidm.com https://github.com/kanidm/kanidm"
 SRC_URI="https://github.com/kanidm/kanidm/archive/v${MY_PV}.tar.gz -> kanidm-${PV}.tar.gz"
 if [[ ${PKGBUMPING} != ${PVR} ]]; then
-	SRC_URI+=" ${MY_P}-crates.tar.xz"
+	SRC_URI+=" https://dev.gentoo.org/~concord/distfiles/${MY_P}-crates.tar.xz"
 fi
 
 S="${WORKDIR}/${MY_P}"
