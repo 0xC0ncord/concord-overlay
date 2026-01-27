@@ -18,7 +18,6 @@ DEPEND="
 	dev-qt/qtdeclarative:6=
 "
 RDEPEND="${DEPEND}"
-BDEPEND="dev-build/just"
 
 src_install() {
 	cd "${BUILD_DIR}" || die
