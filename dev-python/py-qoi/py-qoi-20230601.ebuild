@@ -22,7 +22,11 @@ RDEPEND=">=dev-python/pillow-9.0.1[${PYTHON_USEDEP}]"
 
 S="${WORKDIR}/${PN}-${MY_GIT_COMMIT}"
 
-python_install() {
+src_install() {
 	mv src qoi || die
+	distutils-r1_src_install
+}
+
+python_install() {
 	python_domodule qoi
 }
