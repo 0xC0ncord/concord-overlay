@@ -3,17 +3,20 @@
 
 EAPI=8
 
-inherit autotools
-
 DESCRIPTION="Opinionated scripts and config files for Gentoo systems"
 HOMEPAGE="https://codeberg.org/concord/concord-config"
 SRC_URI="https://codeberg.org/concord/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+
+S="${WORKDIR}/${PN}"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64"
 
-S="${WORKDIR}/${PN}"
+RDEPEND="
+	app-misc/jq
+	net-misc/curl
+"
 
 src_compile() {
 	true
